@@ -85,11 +85,11 @@ model Hhrr {
 
 model Project {
   id                String   @id @default(uuid())
-  projectName       String   @map("project_name")
-  ownersOrAssociates Json?    @map("owners_or_associates")
+  project_name       String   @map("project_name")
+  owners_or_associates Json?    @map("owners_or_associates")
   lots              Int
-  startDate         DateTime @map("start_date")
-  endDate           DateTime? @map("end_date")
+  start_date         DateTime @map("start_date")
+  end_date           DateTime? @map("end_date")
   address           Json
   createdAt         DateTime @default(now()) @map("created_at")
   updatedAt         DateTime @updatedAt @map("updated_at")
