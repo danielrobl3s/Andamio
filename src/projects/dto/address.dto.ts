@@ -1,13 +1,13 @@
 import { Decimal } from "@prisma/client/runtime/binary";
-import { IsDecimal, IsNotEmpty, IsString } from "class-validator";
+import { IsDecimal, IsNotEmpty, IsNumber, IsString } from "class-validator";
 
 export class AddressDto {
 
-    @IsDecimal()
+    @IsNumber()
     @IsNotEmpty()
     lat!: Decimal;
 
-    @IsDecimal()
+    @IsNumber()
     @IsNotEmpty()
     lng!: Decimal;
 
