@@ -1,0 +1,140 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"  
+  url      = env("DATABASE_URL")
+}
+
+
+model Client {
+  id          String   @id @default(uuid())
+  name        String?
+  lastname    String?
+  gender      String?
+  phoneNumber Int?     @map("phone_number")
+  email       String?  @unique
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  sales Sales[]
+
+  @@map("clients")
+}
+
+model Sales {
+  id             String   @id @default(uuid())
+  clientId       String   @map("client_id")
+  clientName     String   @map("client_name")
+  clientLastname String   @map("client_lastname")
+  projectId      String?  @map("project_id")
+  propertyId     String?  @unique @map("property_id") // @unique asegura la relación 1:1 (-)
+  concept        String
+  amount         Decimal  @db.Decimal(10, 2)
+  date           DateTime
+  isCredit       Boolean  @map("is_credit")
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
+
+  client   Client              @relation(fields: [clientId], references: [id])
+  project  Project?            @relation(fields: [projectId], references: [id])
+  property ProjectsProperties? @relation(fields: [propertyId], references: [id])
+
+  @@map("sales")
+}
+
+model HhrrWorker {
+  id                   String   @id @default(uuid())
+  workerName           String   @map("worker_name")
+  workerLastname       String   @map("worker_lastname")
+  phone                Int
+  hasInsurance         Boolean  @map("has_insurance")
+  socialSecurityNumber String?  @map("social_security_number")
+  job                  String?
+  workingSince         DateTime @map("working_since")
+  createdAt            DateTime @default(now()) @map("created_at")
+  updatedAt            DateTime @updatedAt @map("updated_at")
+
+  hhrrRecords Hhrr[]
+
+  @@map("hhrr_workers")
+}
+
+model Hhrr {
+  id             String   @id @default(uuid())
+  workerId       String?  @map("worker_id")
+  workerName     String   @map("worker_name")
+  workerLastname String   @map("worker_lastname")
+  phoneNumber    Int      @map("phone_number")
+  payroll        Boolean
+  amount         Decimal  @db.Decimal(10, 2)
+  date           DateTime
+  projectId      String?  @map("project_id")
+  propertyId     String?  @map("property_id")
+  concept        String
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
+
+  worker   HhrrWorker?         @relation(fields: [workerId], references: [id])
+  project  Project?            @relation(fields: [projectId], references: [id])
+  property ProjectsProperties? @relation(fields: [propertyId], references: [id])
+
+  @@map("hhrr")
+}
+
+model Project {
+  id                String   @id @default(uuid())
+  projectName       String   @map("project_name")
+  ownersOrAssociates Json?    @map("owners_or_associates")
+  lots              Int
+  startDate         DateTime @map("start_date")
+  endDate           DateTime? @map("end_date")
+  address           Json
+  createdAt         DateTime @default(now()) @map("created_at")
+  updatedAt         DateTime @updatedAt @map("updated_at")
+
+  properties ProjectsProperties[]
+  hhrrRecords Hhrr[]
+  reports    Report[]
+  sales      Sales[]
+
+  @@map("projects")
+}
+
+model ProjectsProperties {
+  id              String   @id @default(uuid())
+  projectId       String?  @map("project_id")
+  propertyName    String   @map("property_name")
+  numberOfLots    Int      @map("number_of_lots")
+  estimatedBudget Decimal  @db.Decimal(10, 2) @map("estimated_budget")
+  startDate       DateTime @map("start_date")
+  endDate         DateTime? @map("end_date")
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+  project Project? @relation(fields: [projectId], references: [id])
+  sales   Sales?
+  hhrr    Hhrr[]
+  reports Report[]
+
+  @@map("projects_properties")
+}
+
+model Report {
+  id         String   @id @default(uuid())
+  name       String
+  query      Json
+  date       DateTime
+  isBill     Boolean  @map("is_bill")
+  issuedBy   String   @map("issued_by")
+  projectId  String   @map("project_id")
+  propertyId String   @map("property_id")
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+
+  project  Project            @relation(fields: [projectId], references: [id])
+  property ProjectsProperties @relation(fields: [propertyId], references: [id])
+
+  @@map("reports")
+}
