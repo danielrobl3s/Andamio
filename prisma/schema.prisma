@@ -13,7 +13,7 @@ model Client {
   name        String?
   lastname    String?
   gender      String?
-  phoneNumber Int?     @map("phone_number")
+  phone_number String?     @map("phone_number")
   email       String?  @unique
   created_at   DateTime @default(now()) @map("created_at")
   updated_at   DateTime @updatedAt @map("updated_at")
@@ -25,19 +25,19 @@ model Client {
 
 model Sales {
   id             String   @id @default(uuid())
-  clientId       String   @map("client_id")
-  clientName     String   @map("client_name")
-  clientLastname String   @map("client_lastname")
+  client_id       String   @map("client_id")
+  client_name     String   @map("client_name")
+  client_lastname String   @map("client_lastname")
   project_id      String?  @map("project_id")
   property_id     String?  @unique @map("property_id") // @unique asegura la relación 1:1 (-)
   concept        String
   amount         Decimal  @db.Decimal(10, 2)
   date           DateTime
-  isCredit       Boolean  @map("is_credit")
+  is_credit       Boolean  @map("is_credit")
   created_at      DateTime @default(now()) @map("created_at")
   updated_at      DateTime @updatedAt @map("updated_at")
 
-  client   Client              @relation(fields: [clientId], references: [id])
+  client   Client              @relation(fields: [client_id], references: [id])
   project  Project?            @relation(fields: [project_id], references: [id])
   property ProjectsProperties? @relation(fields: [property_id], references: [id])
 
