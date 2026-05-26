@@ -16,7 +16,7 @@ model Client {
   phoneNumber Int?     @map("phone_number")
   email       String?  @unique
   created_at   DateTime @default(now()) @map("created_at")
-  updatedAt   DateTime @updatedAt @map("updated_at")
+  updated_at   DateTime @updatedAt @map("updated_at")
 
   sales Sales[]
 
@@ -28,18 +28,18 @@ model Sales {
   clientId       String   @map("client_id")
   clientName     String   @map("client_name")
   clientLastname String   @map("client_lastname")
-  projectId      String?  @map("project_id")
-  propertyId     String?  @unique @map("property_id") // @unique asegura la relación 1:1 (-)
+  project_id      String?  @map("project_id")
+  property_id     String?  @unique @map("property_id") // @unique asegura la relación 1:1 (-)
   concept        String
   amount         Decimal  @db.Decimal(10, 2)
   date           DateTime
   isCredit       Boolean  @map("is_credit")
   created_at      DateTime @default(now()) @map("created_at")
-  updatedAt      DateTime @updatedAt @map("updated_at")
+  updated_at      DateTime @updatedAt @map("updated_at")
 
   client   Client              @relation(fields: [clientId], references: [id])
-  project  Project?            @relation(fields: [projectId], references: [id])
-  property ProjectsProperties? @relation(fields: [propertyId], references: [id])
+  project  Project?            @relation(fields: [project_id], references: [id])
+  property ProjectsProperties? @relation(fields: [property_id], references: [id])
 
   @@map("sales")
 }
@@ -54,7 +54,7 @@ model HhrrWorker {
   job                  String?
   workingSince         DateTime @map("working_since")
   created_at            DateTime @default(now()) @map("created_at")
-  updatedAt            DateTime @updatedAt @map("updated_at")
+  updated_at            DateTime @updatedAt @map("updated_at")
 
   hhrrRecords Hhrr[]
 
@@ -70,15 +70,15 @@ model Hhrr {
   payroll        Boolean
   amount         Decimal  @db.Decimal(10, 2)
   date           DateTime
-  projectId      String?  @map("project_id")
-  propertyId     String?  @map("property_id")
+  project_id      String?  @map("project_id")
+  property_id     String?  @map("property_id")
   concept        String
   created_at      DateTime @default(now()) @map("created_at")
-  updatedAt      DateTime @updatedAt @map("updated_at")
+  updated_at      DateTime @updatedAt @map("updated_at")
 
   worker   HhrrWorker?         @relation(fields: [workerId], references: [id])
-  project  Project?            @relation(fields: [projectId], references: [id])
-  property ProjectsProperties? @relation(fields: [propertyId], references: [id])
+  project  Project?            @relation(fields: [project_id], references: [id])
+  property ProjectsProperties? @relation(fields: [property_id], references: [id])
 
   @@map("hhrr")
 }
@@ -92,7 +92,7 @@ model Project {
   end_date           DateTime? @map("end_date")
   address           Json
   created_at         DateTime @default(now()) @map("created_at")
-  updatedAt         DateTime @updatedAt @map("updated_at")
+  updated_at         DateTime @updatedAt @map("updated_at")
 
   properties ProjectsProperties[]
   hhrrRecords Hhrr[]
@@ -104,16 +104,16 @@ model Project {
 
 model ProjectsProperties {
   id              String   @id @default(uuid())
-  projectId       String?  @map("project_id")
-  propertyName    String   @map("property_name")
-  numberOfLots    Int      @map("number_of_lots")
-  estimatedBudget Decimal  @db.Decimal(10, 2) @map("estimated_budget")
-  startDate       DateTime @map("start_date")
-  endDate         DateTime? @map("end_date")
+  project_id       String?  @map("project_id")
+  property_name    String   @map("property_name")
+  number_of_lots    Int      @map("number_of_lots")
+  estimated_budget Decimal  @db.Decimal(10, 2) @map("estimated_budget")
+  start_date       DateTime @map("start_date")
+  end_date         DateTime? @map("end_date")
   created_at       DateTime @default(now()) @map("created_at")
-  updatedAt       DateTime @updatedAt @map("updated_at")
+  updated_at       DateTime @updatedAt @map("updated_at")
 
-  project Project? @relation(fields: [projectId], references: [id])
+  project Project? @relation(fields: [project_id], references: [id])
   sales   Sales?
   hhrr    Hhrr[]
   reports Report[]
@@ -126,15 +126,15 @@ model Report {
   name       String
   query      Json
   date       DateTime
-  isBill     Boolean  @map("is_bill")
-  issuedBy   String   @map("issued_by")
-  projectId  String   @map("project_id")
-  propertyId String   @map("property_id")
+  is_bill     Boolean  @map("is_bill")
+  issued_by   String   @map("issued_by")
+  project_id  String   @map("project_id")
+  property_id String   @map("property_id")
   created_at  DateTime @default(now()) @map("created_at")
-  updatedAt  DateTime @updatedAt @map("updated_at")
+  updated_at  DateTime @updatedAt @map("updated_at")
 
-  project  Project            @relation(fields: [projectId], references: [id])
-  property ProjectsProperties @relation(fields: [propertyId], references: [id])
+  project  Project            @relation(fields: [project_id], references: [id])
+  property ProjectsProperties @relation(fields: [property_id], references: [id])
 
   @@map("reports")
 }
