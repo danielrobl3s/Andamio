@@ -5,10 +5,12 @@ import { ProjectsModule } from './projects/projects.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { ProjectsPropertiesModule } from './projects_properties/projects_properties.module';
 import { ClientsModule } from './clients/clients.module';
+import { SalesModule } from './sales/sales.module';
+import { PrismaService } from './prisma/prisma.service';
 
 @Module({
-  imports: [ProjectsModule, PrismaModule, ProjectsPropertiesModule, ClientsModule],
+  imports: [ProjectsModule, PrismaModule, ProjectsPropertiesModule, ClientsModule, SalesModule],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, PrismaService],
 })
 export class AppModule {}
