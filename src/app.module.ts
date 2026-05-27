@@ -7,9 +7,10 @@ import { ProjectsPropertiesModule } from './projects_properties/projects_propert
 import { ClientsModule } from './clients/clients.module';
 import { SalesModule } from './sales/sales.module';
 import { PrismaService } from './prisma/prisma.service';
+import { HhrrWorkersModule } from './hhrr_workers/hhrr_workers.module';
 
 @Module({
-  imports: [ProjectsModule, PrismaModule, ProjectsPropertiesModule, ClientsModule, SalesModule],
+  imports: [ProjectsModule, PrismaModule, ProjectsPropertiesModule, ClientsModule, SalesModule, HhrrWorkersModule],
   controllers: [AppController],
   providers: [AppService, PrismaService],
 })

@@ -46,13 +46,13 @@ model Sales {
 
 model HhrrWorker {
   id                   String   @id @default(uuid())
-  workerName           String   @map("worker_name")
-  workerLastname       String   @map("worker_lastname")
-  phone                Int
-  hasInsurance         Boolean  @map("has_insurance")
-  socialSecurityNumber String?  @map("social_security_number")
+  worker_name           String   @map("worker_name")
+  worker_lastname       String   @map("worker_lastname")
+  phone                String
+  has_insurance         Boolean  @map("has_insurance")
+  social_security_number String?  @map("social_security_number")
   job                  String?
-  workingSince         DateTime @map("working_since")
+  working_since         DateTime @map("working_since")
   created_at            DateTime @default(now()) @map("created_at")
   updated_at            DateTime @updatedAt @map("updated_at")
 
@@ -63,10 +63,10 @@ model HhrrWorker {
 
 model Hhrr {
   id             String   @id @default(uuid())
-  workerId       String?  @map("worker_id")
-  workerName     String   @map("worker_name")
-  workerLastname String   @map("worker_lastname")
-  phoneNumber    Int      @map("phone_number")
+  worker_id       String?  @map("worker_id")
+  worker_name     String   @map("worker_name")
+  worker_lastname String   @map("worker_lastname")
+  phone_number    Int      @map("phone_number")
   payroll        Boolean
   amount         Decimal  @db.Decimal(10, 2)
   date           DateTime
@@ -76,7 +76,7 @@ model Hhrr {
   created_at      DateTime @default(now()) @map("created_at")
   updated_at      DateTime @updatedAt @map("updated_at")
 
-  worker   HhrrWorker?         @relation(fields: [workerId], references: [id])
+  worker   HhrrWorker?         @relation(fields: [worker_id], references: [id])
   project  Project?            @relation(fields: [project_id], references: [id])
   property ProjectsProperties? @relation(fields: [property_id], references: [id])
 
