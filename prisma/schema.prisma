@@ -124,6 +124,7 @@ model ProjectsProperties {
 model Report {
   id         String   @id @default(uuid())
   name       String
+  model      String
   query      Json
   date       DateTime
   is_bill     Boolean  @map("is_bill")
