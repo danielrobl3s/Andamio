@@ -1,12 +1,13 @@
 import { Prisma } from '@prisma/client';
+import { PrismaService } from '../../prisma/prisma.service';
 
 export const modelFilters = {
-    Projects: {} as Prisma.ProjectWhereInput,
-    Projects_properties: {} as Prisma.ProjectsPropertiesWhereInput,
-    Sales: {} as Prisma.SalesWhereInput,
+    project: {} as Prisma.ProjectWhereInput,
+    projectsProperties: {} as Prisma.ProjectsPropertiesWhereInput,
+    sales: {} as Prisma.SalesWhereInput,
     hhrr: {} as Prisma.HhrrWhereInput,
-    hhrr_workers: {} as Prisma.HhrrWorkerWhereInput,
-    clients: {} as Prisma.ClientWhereInput
+    hhrrWorker: {} as Prisma.HhrrWorkerWhereInput,
+    client: {} as Prisma.ClientWhereInput
 } as const;
 
 
@@ -14,3 +15,6 @@ export type ModelName = keyof typeof modelFilters;
 
 export type WhereInput<T extends ModelName> = typeof modelFilters[T];
 
+export type PrismaDelegate = {
+    findMany: (args?: unknown) => Promise<unknown[]>
+}

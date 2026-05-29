@@ -1,18 +1,25 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateReportDto } from './dto/create-report.dto';
-import { ModelName } from './interfaces/filters.types';
+import { ModelName, PrismaDelegate } from './interfaces/filters.types';
 import { InputJsonValue } from '@prisma/client/runtime/binary';
 import { QueryDto } from './dto/query.dto';
 import { Query } from './interfaces/query.interface';
 import { timingSafeEqual } from 'crypto';
 import { UpdateReportDto } from './dto/update-report.dto';
+import { Mode } from 'fs';
 
 @Injectable()
 export class ReportsService {
     constructor(
         private readonly prismaService: PrismaService
     ){}
+
+    private getDelegate(
+        model: ModelName
+    ){
+        return (this.prismaService as unknown as Record<ModelName, PrismaDelegate>)[model]
+    }
 
     async create(
         createReportDto: CreateReportDto<ModelName>
@@ -61,4 +68,13 @@ export class ReportsService {
             where: {id: id}
         })
     }
+
+    async executeQuery(
+        model: ModelName, query: QueryDto<ModelName>
+    ){
+        const delegate = this.getDelegate(model)
+
+        return delegate.findMany(query);
+    }
+    
 }

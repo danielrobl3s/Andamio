@@ -1,8 +1,9 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, NotFoundException, Param, Patch, Post } from '@nestjs/common';
 import { ReportsService } from './reports.service';
 import { CreateReportDto } from './dto/create-report.dto';
 import { ModelName } from './interfaces/filters.types';
 import { UpdateReportDto } from './dto/update-report.dto';
+import { QueryDto } from './dto/query.dto';
 
 @Controller('reports')
 export class ReportsController {
@@ -42,5 +43,22 @@ export class ReportsController {
         @Param('id') id: string
     ){
         return this.reportsService.delete(id);
+    }
+
+    @Get('/executeQuery/:id')
+    async executeQueryFromReport(
+        @Param('id') id: string,
+        @Body() body: { modelName: ModelName }
+    ){  
+        const report = await this.reportsService.getOne(id);
+
+        if (!report) throw new NotFoundException('Report not found :(')
+
+        return await this.reportsService.executeQuery(
+            report.model as ModelName,
+            report.query as unknown as QueryDto<ModelName>
+        )
+
+
     }
 }
