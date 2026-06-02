@@ -7,14 +7,23 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model User {
+
+  id           String   @id @default(uuid())
+  email        String   @unique
+  password     String   @unique
+  name         String   
+  created_at   DateTime @default(now()) @map("created_at")
+  updated_at   DateTime @updatedAt @map("updated_at")
+}
 
 model Client {
-  id          String   @id @default(uuid())
-  name        String?
-  lastname    String?
-  gender      String?
+  id           String   @id @default(uuid())
+  name         String?
+  lastname     String?
+  gender       String?
   phone_number String?     @map("phone_number")
-  email       String?  @unique
+  email        String?  @unique
   created_at   DateTime @default(now()) @map("created_at")
   updated_at   DateTime @updatedAt @map("updated_at")
 

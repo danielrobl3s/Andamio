@@ -10,9 +10,10 @@ import { PrismaService } from './prisma/prisma.service';
 import { HhrrWorkersModule } from './hhrr_workers/hhrr_workers.module';
 import { HhrrModule } from './hhrr/hhrr.module';
 import { ReportsModule } from './reports/reports.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
-  imports: [ProjectsModule, PrismaModule, ProjectsPropertiesModule, ClientsModule, SalesModule, HhrrWorkersModule, HhrrModule, ReportsModule],
+  imports: [ProjectsModule, PrismaModule, ProjectsPropertiesModule, ClientsModule, SalesModule, HhrrWorkersModule, HhrrModule, ReportsModule, AuthModule],
   controllers: [AppController],
   providers: [AppService, PrismaService],
 })
