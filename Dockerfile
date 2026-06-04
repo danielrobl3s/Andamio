@@ -1,15 +1,9 @@
-# ---------- Base ----------
-# Pin a specific Node LTS for reproducible builds.
 FROM node:22-slim AS base
-
-# Prisma needs OpenSSL present in slim/alpine-style images.
 RUN apt-get update -y && apt-get install -y openssl && rm -rf /var/lib/apt/lists/*
-
-# Enable pnpm via corepack (ships with Node, no separate install).
 RUN corepack enable && corepack prepare pnpm@9.15.4 --activate
-
 WORKDIR /app
-
+RUN chown -R node:node /app
+USER node
 
 # ---------- Dependencies ----------
 # Install ALL deps (incl. dev) here so we can build. Cached unless lockfile changes.
