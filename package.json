@@ -9,6 +9,17 @@
   "prisma": {
     "schema": "./prisma/schema.prisma"
   },
+
+  "pnpm": {
+  "onlyBuiltDependencies": [
+    "@prisma/client",
+    "@prisma/engines",
+    "prisma",
+    "@nestjs/core",
+    "unrs-resolver"
+    ]
+  },
+
   "scripts": {
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
