@@ -1,6 +1,6 @@
 FROM node:22-slim AS base
 RUN apt-get update -y && apt-get install -y openssl && rm -rf /var/lib/apt/lists/*
-RUN corepack enable && corepack prepare pnpm@9.15.4 --activate
+RUN corepack enable && corepack prepare pnpm@latest --activate
 WORKDIR /app
 RUN chown -R node:node /app
 USER node
