@@ -5,6 +5,10 @@
   "author": "",
   "private": true,
   "license": "UNLICENSED",
+
+  "prisma": {
+    "schema": "prisma/schema.prisma"
+  },
   "scripts": {
     "postinstall": "prisma generate",
     "build": "nest build",
