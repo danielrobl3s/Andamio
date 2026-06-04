@@ -1,8 +1,10 @@
 # ---------- Base ----------
 FROM node:22-slim AS base
 RUN apt-get update -y && apt-get install -y openssl && rm -rf /var/lib/apt/lists/*
+ENV COREPACK_ENABLE_STRICT=0
 RUN corepack enable && corepack prepare pnpm@latest --activate
 WORKDIR /app
+RUN chown -R node:node /app
 
 # ---------- Prod dependencies ----------
 FROM base AS deps-prod
