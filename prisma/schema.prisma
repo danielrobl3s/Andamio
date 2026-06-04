@@ -1,20 +1,20 @@
+
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "postgresql"  
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
-
 model Client {
-  id          String   @id @default(uuid())
-  name        String?
-  lastname    String?
-  gender      String?
-  phone_number String?     @map("phone_number")
-  email       String?  @unique
+  id           String   @id @default(uuid())
+  name         String?
+  lastname     String?
+  gender       String?
+  phone_number String?  @map("phone_number")
+  email        String?  @unique
   created_at   DateTime @default(now()) @map("created_at")
   updated_at   DateTime @updatedAt @map("updated_at")
 
@@ -24,15 +24,15 @@ model Client {
 }
 
 model Sales {
-  id             String   @id @default(uuid())
+  id              String   @id @default(uuid())
   client_id       String   @map("client_id")
   client_name     String   @map("client_name")
   client_lastname String   @map("client_lastname")
   project_id      String?  @map("project_id")
   property_id     String?  @unique @map("property_id") // @unique asegura la relación 1:1 (-)
-  concept        String
-  amount         Decimal  @db.Decimal(10, 2)
-  date           DateTime
+  concept         String
+  amount          Decimal  @db.Decimal(10, 2)
+  date            DateTime
   is_credit       Boolean  @map("is_credit")
   created_at      DateTime @default(now()) @map("created_at")
   updated_at      DateTime @updatedAt @map("updated_at")
@@ -45,16 +45,16 @@ model Sales {
 }
 
 model HhrrWorker {
-  id                   String   @id @default(uuid())
-  worker_name           String   @map("worker_name")
-  worker_lastname       String   @map("worker_lastname")
-  phone                String
-  has_insurance         Boolean  @map("has_insurance")
+  id                     String   @id @default(uuid())
+  worker_name            String   @map("worker_name")
+  worker_lastname        String   @map("worker_lastname")
+  phone                  String
+  has_insurance          Boolean  @map("has_insurance")
   social_security_number String?  @map("social_security_number")
-  job                  String?
-  working_since         DateTime @map("working_since")
-  created_at            DateTime @default(now()) @map("created_at")
-  updated_at            DateTime @updatedAt @map("updated_at")
+  job                    String?
+  working_since          DateTime @map("working_since")
+  created_at             DateTime @default(now()) @map("created_at")
+  updated_at             DateTime @updatedAt @map("updated_at")
 
   hhrrRecords Hhrr[]
 
@@ -62,17 +62,17 @@ model HhrrWorker {
 }
 
 model Hhrr {
-  id             String   @id @default(uuid())
+  id              String   @id @default(uuid())
   worker_id       String?  @map("worker_id")
   worker_name     String   @map("worker_name")
   worker_lastname String   @map("worker_lastname")
-  phone_number    String      @map("phone_number")
-  payroll        Boolean
-  amount         Decimal  @db.Decimal(10, 2)
-  date           DateTime
+  phone_number    String   @map("phone_number")
+  payroll         Boolean
+  amount          Decimal  @db.Decimal(10, 2)
+  date            DateTime
   project_id      String?  @map("project_id")
   property_id     String?  @map("property_id")
-  concept        String
+  concept         String
   created_at      DateTime @default(now()) @map("created_at")
   updated_at      DateTime @updatedAt @map("updated_at")
 
@@ -84,34 +84,34 @@ model Hhrr {
 }
 
 model Project {
-  id                String   @id @default(uuid())
-  project_name       String   @map("project_name")
-  owners_or_associates Json?    @map("owners_or_associates")
-  lots              Int
-  start_date         DateTime @map("start_date")
-  end_date           DateTime? @map("end_date")
-  address           Json
-  created_at         DateTime @default(now()) @map("created_at")
-  updated_at         DateTime @updatedAt @map("updated_at")
+  id                   String    @id @default(uuid())
+  project_name         String    @map("project_name")
+  owners_or_associates Json?     @map("owners_or_associates")
+  lots                 Int
+  start_date           DateTime  @map("start_date")
+  end_date             DateTime? @map("end_date")
+  address              Json
+  created_at           DateTime  @default(now()) @map("created_at")
+  updated_at           DateTime  @updatedAt @map("updated_at")
 
-  properties ProjectsProperties[]
+  properties  ProjectsProperties[]
   hhrrRecords Hhrr[]
-  reports    Report[]
-  sales      Sales[]
+  reports     Report[]
+  sales       Sales[]
 
   @@map("projects")
 }
 
 model ProjectsProperties {
-  id              String   @id @default(uuid())
-  project_id       String?  @map("project_id")
-  property_name    String   @map("property_name")
-  number_of_lots    Int      @map("number_of_lots")
-  estimated_budget Decimal  @db.Decimal(10, 2) @map("estimated_budget")
-  start_date       DateTime @map("start_date")
+  id               String    @id @default(uuid())
+  project_id       String?   @map("project_id")
+  property_name    String    @map("property_name")
+  number_of_lots   Int       @map("number_of_lots")
+  estimated_budget Decimal   @db.Decimal(10, 2) @map("estimated_budget")
+  start_date       DateTime  @map("start_date")
   end_date         DateTime? @map("end_date")
-  created_at       DateTime @default(now()) @map("created_at")
-  updated_at       DateTime @updatedAt @map("updated_at")
+  created_at       DateTime  @default(now()) @map("created_at")
+  updated_at       DateTime  @updatedAt @map("updated_at")
 
   project Project? @relation(fields: [project_id], references: [id])
   sales   Sales?
@@ -122,11 +122,11 @@ model ProjectsProperties {
 }
 
 model Report {
-  id         String   @id @default(uuid())
-  name       String
-  model      String
-  query      Json
-  date       DateTime
+  id          String   @id @default(uuid())
+  name        String
+  model       String
+  query       Json
+  date        DateTime
   is_bill     Boolean  @map("is_bill")
   issued_by   String   @map("issued_by")
   project_id  String   @map("project_id")
@@ -138,4 +138,67 @@ model Report {
   property ProjectsProperties @relation(fields: [property_id], references: [id])
 
   @@map("reports")
+}
+
+model User {
+  id            String    @id
+  name          String
+  email         String
+  emailVerified Boolean   @default(false)
+  image         String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  sessions      Session[]
+  accounts      Account[]
+
+  @@unique([email])
+  @@map("user")
+}
+
+model Session {
+  id        String   @id
+  expiresAt DateTime
+  token     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  ipAddress String?
+  userAgent String?
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([token])
+  @@index([userId])
+  @@map("session")
+}
+
+model Account {
+  id                    String    @id
+  accountId             String
+  providerId            String
+  userId                String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+
+  @@index([userId])
+  @@map("account")
+}
+
+model Verification {
+  id         String   @id
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([identifier])
+  @@map("verification")
 }
