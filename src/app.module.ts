@@ -11,7 +11,8 @@ import { HhrrWorkersModule } from './hhrr_workers/hhrr_workers.module';
 import { HhrrModule } from './hhrr/hhrr.module';
 import { ReportsModule } from './reports/reports.module';
 import { auth } from './lib/auth';
-import { AuthModule } from '@thallesp/nestjs-better-auth';
+import { AuthGuard, AuthModule } from '@thallesp/nestjs-better-auth';
+import { APP_GUARD } from '@nestjs/core';
 
 @Module({
   imports: [
@@ -26,6 +27,10 @@ import { AuthModule } from '@thallesp/nestjs-better-auth';
     AuthModule.forRoot({auth})
   ],
   controllers: [AppController],
-  providers: [AppService, PrismaService],
+  providers: [
+    AppService, 
+    PrismaService,
+    { provide: APP_GUARD, useValue: AuthGuard}
+  ],
 })
 export class AppModule {}
