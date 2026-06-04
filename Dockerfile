@@ -39,8 +39,6 @@ COPY --from=build /app/dist ./dist
 COPY --from=build /app/package.json ./package.json
 COPY --from=build /app/prisma ./prisma
 
-USER node
-
 EXPOSE 3000
 
 CMD pnpm prisma migrate deploy && node dist/main.js
