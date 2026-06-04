@@ -1,46 +1,46 @@
-# Build stage
-FROM node:22-slim AS builder
-
-# Install openssl for Prisma
-RUN apt-get update -y && apt-get install -y openssl
-
+# ---------- Base ----------
+FROM node:22-slim AS base
+RUN apt-get update -y && apt-get install -y openssl && rm -rf /var/lib/apt/lists/*
+ENV COREPACK_ENABLE_STRICT=0
+RUN corepack enable --install-directory ~/bin && corepack prepare pnpm@latest --activate
 WORKDIR /app
+RUN chown -R node:node /app
 
-# Install pnpm
-RUN corepack enable && corepack prepare pnpm@latest --activate
+# ---------- Prod dependencies ----------
+FROM base AS deps-prod
+COPY package.json pnpm-lock.yaml .npmrc pnpm-workspace.yaml ./
+COPY prisma ./prisma
+RUN pnpm install --frozen-lockfile --prod
 
-# Copy configuration files
-COPY package.json pnpm-lock.yaml ./
-COPY prisma ./prisma/
-
-# Install dependencies
+# ---------- Dev dependencies (for build) ----------
+FROM base AS deps-dev
+COPY package.json pnpm-lock.yaml .npmrc pnpm-workspace.yaml ./
+COPY prisma ./prisma
 RUN pnpm install --frozen-lockfile
 
-# Copy source code
+# ---------- Build ----------
+FROM base AS build
+COPY --from=deps-dev /app/node_modules ./node_modules
 COPY . .
+RUN pnpm prisma generate
+RUN pnpm run build
 
-# ... (después de pnpm install)
-RUN npx prisma generate
-RUN pnpm build
-# Production stage
-FROM node:22-slim AS runner
-
-# Install openssl for Prisma runtime
-RUN apt-get update -y && apt-get install -y openssl
-
+# ---------- Runtime ----------
+FROM node:22-slim AS runtime
+RUN apt-get update -y && apt-get install -y openssl && rm -rf /var/lib/apt/lists/*
+RUN corepack enable --install-directory ~/bin && corepack prepare pnpm@latest --activate
 WORKDIR /app
 
 ENV NODE_ENV=production
-ENV STANDALONE=true
+ENV PORT=3000
 
-# Copy only necessary files from builder
-COPY --from=builder /app/dist ./dist
-COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app/package.json ./package.json
-COPY --from=builder /app/prisma ./prisma
+COPY --from=deps-prod /app/node_modules ./node_modules
+COPY --from=build /app/dist ./dist
+COPY --from=build /app/package.json ./package.json
+COPY --from=build /app/prisma ./prisma
 
-# Expose port (default NestJS 3000, adjust if necessary)
+USER node
+
 EXPOSE 3000
 
-# Start the application
-CMD ["node", "dist/main"]
+CMD pnpm prisma migrate deploy && node dist/main.js
