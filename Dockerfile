@@ -15,7 +15,8 @@ WORKDIR /app
 # Install ALL deps (incl. dev) here so we can build. Cached unless lockfile changes.
 FROM base AS deps
 
-COPY package.json pnpm-lock.yaml ./
+COPY package.json pnpm-lock.yaml .npmrc ./
+COPY prisma ./prisma
 RUN pnpm install --frozen-lockfile
 
 
