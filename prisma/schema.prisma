@@ -1,4 +1,3 @@
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -17,6 +16,10 @@ model Client {
   email        String?  @unique
   created_at   DateTime @default(now()) @map("created_at")
   updated_at   DateTime @updatedAt @map("updated_at")
+
+  // Auth Relation fields
+  created_by   String   @map("created_by")
+  creator      User     @relation(fields: [created_by], references: [id], onDelete: Cascade)
 
   sales Sales[]
 
@@ -37,6 +40,10 @@ model Sales {
   created_at      DateTime @default(now()) @map("created_at")
   updated_at      DateTime @updatedAt @map("updated_at")
 
+  // Auth Relation fields
+  created_by      String   @map("created_by")
+  creator         User     @relation(fields: [created_by], references: [id], onDelete: Cascade)
+
   client   Client              @relation(fields: [client_id], references: [id])
   project  Project?            @relation(fields: [project_id], references: [id])
   property ProjectsProperties? @relation(fields: [property_id], references: [id])
@@ -55,6 +62,10 @@ model HhrrWorker {
   working_since          DateTime @map("working_since")
   created_at             DateTime @default(now()) @map("created_at")
   updated_at             DateTime @updatedAt @map("updated_at")
+
+  // Auth Relation fields
+  created_by             String   @map("created_by")
+  creator                User     @relation(fields: [created_by], references: [id], onDelete: Cascade)
 
   hhrrRecords Hhrr[]
 
@@ -76,6 +87,10 @@ model Hhrr {
   created_at      DateTime @default(now()) @map("created_at")
   updated_at      DateTime @updatedAt @map("updated_at")
 
+  // Auth Relation fields
+  created_by      String   @map("created_by")
+  creator         User     @relation(fields: [created_by], references: [id], onDelete: Cascade)
+
   worker   HhrrWorker?         @relation(fields: [worker_id], references: [id])
   project  Project?            @relation(fields: [project_id], references: [id])
   property ProjectsProperties? @relation(fields: [property_id], references: [id])
@@ -93,6 +108,10 @@ model Project {
   address              Json
   created_at           DateTime  @default(now()) @map("created_at")
   updated_at           DateTime  @updatedAt @map("updated_at")
+
+  // Auth Relation fields
+  created_by           String    @map("created_by")
+  creator              User      @relation(fields: [created_by], references: [id], onDelete: Cascade)
 
   properties  ProjectsProperties[]
   hhrrRecords Hhrr[]
@@ -112,6 +131,10 @@ model ProjectsProperties {
   end_date         DateTime? @map("end_date")
   created_at       DateTime  @default(now()) @map("created_at")
   updated_at       DateTime  @updatedAt @map("updated_at")
+
+  // Auth Relation fields
+  created_by       String    @map("created_by")
+  creator          User      @relation(fields: [created_by], references: [id], onDelete: Cascade)
 
   project Project? @relation(fields: [project_id], references: [id])
   sales   Sales?
@@ -134,6 +157,10 @@ model Report {
   created_at  DateTime @default(now()) @map("created_at")
   updated_at  DateTime @updatedAt @map("updated_at")
 
+  // Auth Relation fields
+  created_by  String   @map("created_by")
+  creator     User     @relation(fields: [created_by], references: [id], onDelete: Cascade)
+
   project  Project            @relation(fields: [project_id], references: [id])
   property ProjectsProperties @relation(fields: [property_id], references: [id])
 
@@ -150,6 +177,15 @@ model User {
   updatedAt     DateTime  @updatedAt
   sessions      Session[]
   accounts      Account[]
+  
+  // Back-relations for data ownership isolation
+  clients            Client[]
+  sales              Sales[]
+  hhrrWorkers        HhrrWorker[]
+  hhrrRecords        Hhrr[]
+  projects           Project[]
+  projectsProperties ProjectsProperties[]
+  reports            Report[]
 
   @@unique([email])
   @@map("user")
