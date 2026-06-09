@@ -40,4 +40,8 @@ export class CreateReportDto<T extends ModelName>{
     @IsNotEmpty()
     property_id!: string;
 
+    @IsString()
+    @IsNotEmpty()
+    created_by!: string;
+
 }

@@ -23,4 +23,8 @@ export class CreateClientDto {
     @IsNotEmpty()
     email!: string;
 
+    @IsString()
+    @IsNotEmpty()
+    created_by!: string;
+
 }

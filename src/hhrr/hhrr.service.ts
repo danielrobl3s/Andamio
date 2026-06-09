@@ -15,26 +15,30 @@ export class HhrrService {
         });
     }
 
-    async getAll(){
-        return this.prismaService.hhrr.findMany();
-    }
-
-    async getOne(id: string){
-        return this.prismaService.hhrr.findUnique({
-            where: {id: id}
+    async getAll(userId: string){
+        return this.prismaService.hhrr.findMany({
+            where: {
+                created_by: userId
+            }
         });
     }
 
-    async update(id: string, updateHhrrDto: UpdateHhrrDto){
+    async getOne(userId: string, id: string){
+        return this.prismaService.hhrr.findUnique({
+            where: {id: id, created_by: userId}
+        });
+    }
+
+    async update(userId: string, id: string, updateHhrrDto: UpdateHhrrDto){
         return this.prismaService.hhrr.update({
-            where: {id: id},
+            where: {id: id, created_by: userId},
             data: updateHhrrDto
         });
     }
 
-    async delete(id: string){
+    async delete(userId: string, id: string){
         return this.prismaService.hhrr.delete({
-            where: {id: id}
+            where: {id: id, created_by: userId}
         });
     }
 

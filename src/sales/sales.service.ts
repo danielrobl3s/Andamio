@@ -9,32 +9,39 @@ export class SalesService {
         private readonly prismaService: PrismaService
     ){}
 
-    async create(createSaleDto: CreateSaleDto){
+    async create(userId: string, createSaleDto: CreateSaleDto){
         return this.prismaService.sales.create({
-            data: createSaleDto
+            data: {
+                ...createSaleDto,
+                created_by: userId
+            }
         });
     }
 
-    async getAll(){
-        return this.prismaService.sales.findMany();
+    async getAll(userId: string){
+        return this.prismaService.sales.findMany({
+            where: {
+                created_by: userId
+            }
+        });
     }
 
-    async getOne(id: string){
+    async getOne(userId: string, id: string){
         return this.prismaService.sales.findUnique({
-            where: {id: id}
+            where: {id: id, created_by: userId}
         })
     }
 
-    async update(id: string, updateSaleDto: UpdateSaleDto){
+    async update(userId: string, id: string, updateSaleDto: UpdateSaleDto){
         return this.prismaService.sales.update({
-            where: {id: id},
+            where: {id: id, created_by: userId},
             data: updateSaleDto
         });
     }
 
-    async delete(id: string){
+    async delete(userId: string, id: string){
         return this.prismaService.sales.delete({
-            where: {id: id}
+            where: {id: id, created_by: userId}
         })
     }
 

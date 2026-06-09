@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Req } from '@nestjs/common';
 import { SalesService } from './sales.service';
 import { CreateSaleDto } from './dto/create-sale.dto';
 import { UpdateClientDto } from '../clients/dto/update-client.dto';
@@ -13,36 +13,47 @@ export class SalesController {
 
     @Post('/create')
     async createSale(
+        @Req() req: any,
         @Body() body: CreateSaleDto
     ){
-        return this.salesService.create(body)
+        const userId = req.user.id
+        return this.salesService.create(userId, body)
     }
 
     @Get('')
-    async getAllSales(){
-        return this.salesService.getAll();
+    async getAllSales(
+        @Req() req: any
+    ){
+        const userId = req.user.id
+        return this.salesService.getAll(userId);
     }
 
     @Get('/:id')
     async getSaleById(
+        @Req() req: any,
         @Param('id') id: string
     ){
-        return this.salesService.getOne(id);
+        const userId = req.user.id
+        return this.salesService.getOne(userId, id);
     }
 
     @Patch('/update/:id')
     async updateSale(
+        @Req() req: any,
         @Param('id') id: string,
         @Body() body: UpdateSaleDto
     ){
-        return this.salesService.update(id, body);
+        const userId = req.user.id
+        return this.salesService.update(userId, id, body);
     }
 
     @Delete('/delete/:id')
     async deleteSale(
+        @Req() req: any,
         @Param('id') id: string
     ){
-        return this.salesService.delete(id);
+        const userId = req.user.id
+        return this.salesService.delete(userId, id);
     }
 
 

@@ -9,6 +9,7 @@ export class ClientsEntity {
     email!: string;
     created_at!: Date;
     updated_at!: Date;
+    created_by!: string;
 
     constructor(partial: Partial<ClientsEntity>){
         Object.assign(this, partial)

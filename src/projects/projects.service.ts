@@ -16,8 +16,12 @@ export class ProjectsService {
         private readonly prismaService: PrismaService
     ){}
 
-    async getAll(): Promise<ProjectMapped[]> {
-        const returned_projects = await this.prismaService.project.findMany();
+    async getAll(userId: string): Promise<ProjectMapped[]> {
+        const returned_projects = await this.prismaService.project.findMany({
+            where: {
+                created_by: userId
+            }
+        });
 
         const mapped: ProjectMapped[] = returned_projects.map((project) => ({
             ...project,
@@ -32,11 +36,13 @@ export class ProjectsService {
         return mapped;
     }
 
-    async getOne(id: string){
+    async getOne(userId: string, id: string){
         const project = await this.prismaService.project.findUnique({
             where: {
-                id: id
+                id: id,
+                created_by: userId
             }
+
         });
 
         return {
@@ -68,9 +74,9 @@ export class ProjectsService {
         }
     }
 
-    async update(id: string, updateProjectDto: UpdateProjectDto){
+    async update(userId: string, id: string, updateProjectDto: UpdateProjectDto){
         const updated_project = await this.prismaService.project.update({
-            where: {id: id},
+            where: {id: id, created_by: userId},
             data: {
                 ...updateProjectDto,
                 owners_or_associates: updateProjectDto.owners_or_associates as unknown as InputJsonValue,
@@ -85,9 +91,9 @@ export class ProjectsService {
         }
     }
 
-    async delete(id: string){
+    async delete(userId: string, id: string){
         const deleted_project = await this.prismaService.project.delete({
-            where: {id: id}
+            where: {id: id, created_by: userId}
         })
 
         return {
