@@ -40,4 +40,8 @@ export class CreateSaleDto {
     @IsNotEmpty()
     is_credit!: boolean;
 
+    @IsString()
+    @IsNotEmpty()
+    created_by!: string;
+
 }

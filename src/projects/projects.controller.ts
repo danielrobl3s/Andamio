@@ -21,37 +21,46 @@ export class ProjectsController {
         @Body() createProjectDto: CreateProjectDto
     ){  
         const userId = req.user.id
-        return this.projectsService.create(req.user_id, createProjectDto)
+        return this.projectsService.create(userId, createProjectDto)
     }
 
     @Get('/all')
     @UseGuards(AuthGuard)
-    async getAllProjects(){
-        return this.projectsService.getAll();
+    async getAllProjects(
+        @Req() req: any
+    ){
+        const userId = req.user.id
+        return this.projectsService.getAll(userId);
     }
 
     @Get('/:id')
     @UseGuards(AuthGuard)
     async getOneProject(
+        @Req() req: any,
         @Param('id') id: string
     ){
-        return this.projectsService.getOne(id);
+        const userId = req.user.id
+        return this.projectsService.getOne(userId, id);
     }
 
     @Patch('/update/:id')
     @UseGuards(AuthGuard)
     async updateProject(
+        @Req() req: any,
         @Param('id') id: string,
         @Body() updateProjectDto: UpdateProjectDto
     ){
-        return this.projectsService.update(id, updateProjectDto)
+        const userId = req.user.id
+        return this.projectsService.update(userId, id, updateProjectDto)
     }
 
     @Delete('/delete/:id')
     @UseGuards(AuthGuard)
     async deleteProject(
+        @Req() req: any,
         @Param('id') id: string
     ){
-        return this.projectsService.delete(id);
+        const userId = req.user.id
+        return this.projectsService.delete(userId, id);
     }
 }

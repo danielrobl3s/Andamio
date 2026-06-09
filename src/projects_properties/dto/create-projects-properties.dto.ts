@@ -29,4 +29,8 @@ export class CreateProjectsProperties {
     @Type(()=>Date)
     end_date?: Date
 
+    @IsString()
+    @IsNotEmpty()
+    created_by!: string;
+
 }

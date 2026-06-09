@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Req } from '@nestjs/common';
 import { HhrrService } from './hhrr.service';
 import { CreateHhrrDto } from './dto/create-hhrr.dto';
 import { UpdateHhrrDto } from './dto/update-hhrr.dto';
@@ -11,35 +11,46 @@ export class HhrrController {
 
     @Post('/create')
     async createHhrr(
+        @Req() req: any,
         @Body() body: CreateHhrrDto
     ){
-        return this.hhrrService.create(body);
+        const userId = req.user.id
+        return this.hhrrService.create({...body, created_by: userId});
     }
 
     @Get('')
-    async getAllHhrr(){
-        return this.hhrrService.getAll();
+    async getAllHhrr(
+        @Req() req: any
+    ){
+        const userId = req.user.id
+        return this.hhrrService.getAll(userId);
     }
 
     @Get('/:id')
     async getHhrrById(
+        @Req() req: any,
         @Param('id') id: string
     ){
-        return this.hhrrService.getOne(id);
+        const userId = req.user.id
+        return this.hhrrService.getOne(userId, id);
     }
 
     @Patch('/update/:id')
     async updateHhrr(
+        @Req() req: any,
         @Param('id') id: string,
         @Body() body: UpdateHhrrDto
     ){
-        return this.hhrrService.update(id, body);
+        const userId = req.user.id
+        return this.hhrrService.update(userId, id, body);
     }
 
     @Delete('/delete/:id')
     async deleteHhrr(
+        @Req() req: any,
         @Param('id') id: string
     ){
-        return this.hhrrService.delete(id);
+        const userId = req.user.id
+        return this.hhrrService.delete(userId, id);
     }
 }

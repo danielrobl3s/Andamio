@@ -10,6 +10,7 @@ export class ProjectsProperties {
     end_date!: Date;
     created_at!: Date;
     updated_at!: Date;
+    created_by!: string;
 
 
     constructor(partial: Partial<ProjectsProperties>){
