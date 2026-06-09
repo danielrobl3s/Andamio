@@ -2,6 +2,9 @@ import { IsArray, IsDate, IsJSON, IsNotEmpty, IsNumber, IsOptional, IsString, Is
 import { Type } from 'class-transformer'
 import { OwnersOrAssociatesDto } from './owners_or_associates.dto';
 import { AddressDto } from './address.dto';
+import {  } from '@thallesp/nestjs-better-auth';
+
+
 
 
 export class CreateProjectDto {
@@ -27,7 +30,11 @@ export class CreateProjectDto {
     @Type(()=> Date)
     end_date?: Date;
 
-    @ValidateNested() @Type(()=>AddressDto) address!: AddressDto
+    @ValidateNested() @Type(()=>AddressDto) address!: AddressDto;
+
+    @IsString()
+    @IsNotEmpty()
+    created_by!: string;
 
 
 }
