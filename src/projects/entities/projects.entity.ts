@@ -12,6 +12,7 @@ export class ProjectEntity {
     address!: AddressDto;
     created_at!: Date;
     updated_at!: Date;
+    created_by!: string;
 
     constructor(partial: Partial<ProjectEntity>){
         Object.assign(this, partial);
