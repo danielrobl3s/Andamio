@@ -5,7 +5,9 @@ import { OwnersOrAssociatesDto } from './dto/owners_or_associates.dto';
 import { OwnersOrAssociates } from './interfaces/owners_or_associates.interface';
 import { address } from './interfaces/address.interface';
 import { UpdateProjectDto } from './dto/update-project.dto';
-import { AuthGuard } from '@thallesp/nestjs-better-auth';
+import { AuthGuard, Session } from '@thallesp/nestjs-better-auth';
+import type { UserSession } from '@thallesp/nestjs-better-auth';
+import { getSession } from 'better-auth/api';
 
 @Controller('projects')
 export class ProjectsController {
@@ -17,50 +19,52 @@ export class ProjectsController {
     @Post('create')
     @UseGuards(AuthGuard)
     async createProject(
-        @Req() req: any,
+        @Session() session: UserSession,
         @Body() createProjectDto: CreateProjectDto
+
     ){  
-        const userId = req.user.id
+
+        const userId = session.user.id
         return this.projectsService.create(userId, createProjectDto)
     }
 
     @Get('/all')
     @UseGuards(AuthGuard)
     async getAllProjects(
-        @Req() req: any
+        @Session() session: UserSession
     ){
-        const userId = req.user.id
+        const userId = session.user.id
         return this.projectsService.getAll(userId);
     }
 
     @Get('/:id')
     @UseGuards(AuthGuard)
     async getOneProject(
-        @Req() req: any,
+        @Session() session: UserSession,
         @Param('id') id: string
     ){
-        const userId = req.user.id
+        const userId = session.user.id
         return this.projectsService.getOne(userId, id);
     }
 
     @Patch('/update/:id')
     @UseGuards(AuthGuard)
     async updateProject(
-        @Req() req: any,
+        @Session() session: UserSession,
         @Param('id') id: string,
         @Body() updateProjectDto: UpdateProjectDto
     ){
-        const userId = req.user.id
+        const userId = session.user.id
         return this.projectsService.update(userId, id, updateProjectDto)
     }
 
     @Delete('/delete/:id')
     @UseGuards(AuthGuard)
     async deleteProject(
-        @Req() req: any,
+        @Session() session: UserSession,
         @Param('id') id: string
     ){
-        const userId = req.user.id
+        const userId = session.user.id
         return this.projectsService.delete(userId, id);
     }
 }
