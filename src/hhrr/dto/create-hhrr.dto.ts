@@ -44,4 +44,8 @@ export class CreateHhrrDto {
     @IsNotEmpty()
     concept!: string;
 
+    @IsString()
+    @IsOptional()
+    created_by?: string;
+
 }

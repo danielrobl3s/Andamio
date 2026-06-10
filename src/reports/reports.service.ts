@@ -22,12 +22,14 @@ export class ReportsService {
     }
 
     async create(
+        userId: string,
         createReportDto: CreateReportDto<ModelName>
     ){
         const createdReport = await this.prismaService.report.create({
             data: {
                 ...createReportDto,
-                query: createReportDto.query as unknown as InputJsonValue
+                query: createReportDto.query as unknown as InputJsonValue,
+                created_by: userId
             }
         });
         
@@ -38,19 +40,25 @@ export class ReportsService {
         }
     }
 
-    async getAll(){
-        return this.prismaService.report.findMany();
-    }
-
-    async getOne(id: string){
-        return this.prismaService.report.findUnique({
-            where: {id: id}
+    async getAll(
+        userId: string
+    ){
+        return this.prismaService.report.findMany({
+            where: {
+                created_by: userId
+            }
         });
     }
 
-    async update(id: string, updateReportDto: UpdateReportDto){
+    async getOne(userId: string, id: string){
+        return this.prismaService.report.findUnique({
+            where: {id: id, created_by: userId}
+        });
+    }
+
+    async update(userId: string, id: string, updateReportDto: UpdateReportDto){
         const updatedReport = await this.prismaService.report.update({
-            where: {id: id},
+            where: {id: id, created_by: userId},
             data: {
                 ...updateReportDto,
                 query: updateReportDto.query as unknown as InputJsonValue
@@ -63,9 +71,9 @@ export class ReportsService {
         }
     }
 
-    async delete(id: string){
+    async delete(userId: string, id: string){
         return this.prismaService.report.delete({
-            where: {id: id}
+            where: {id: id, created_by: userId}
         })
     }
 

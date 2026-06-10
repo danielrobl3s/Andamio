@@ -12,6 +12,7 @@ export class HhhrEntity {
     concept!: string;
     created_at!: Date;
     updated_at!: Date;
+    created_by!: string;
 
     constructor(partial: Partial<HhhrEntity>){
         Object.assign(this, partial);

@@ -13,34 +13,40 @@ export class ProjectsPropertiesService {
     ){}
 
 
-    async getAll(){
-        return this.prismaService.projectsProperties.findMany();
+    async getAll(userId: string){
+        return this.prismaService.projectsProperties.findMany({
+            where: {created_by: userId}
+        });
     }
 
-    async getOne(id: string){
+    async getOne(userId: string, id: string){
         return this.prismaService.projectsProperties.findUnique({
             where: {
-                id: id
+                id: id,
+                created_by: userId
             }
         })
     }
 
-    async create(createProjectsProperties: CreateProjectsProperties){
+    async create(userId: string, createProjectsProperties: CreateProjectsProperties){
         return this.prismaService.projectsProperties.create({
-            data: createProjectsProperties
+            data: {
+                ...createProjectsProperties,
+                created_by: userId
+            }
         })
     }
 
-    async update(id: string, updateProjectsProperties: UpdateProjectsProperties){
+    async update(userId: string, id: string, updateProjectsProperties: UpdateProjectsProperties){
         return this.prismaService.projectsProperties.update({
-            where: {id: id},
+            where: {id: id, created_by: userId},
             data: updateProjectsProperties
         })
     }
 
-    async delete(id: string){
+    async delete(userId: string, id: string){
         return this.prismaService.projectsProperties.delete({
-            where: {id: id}
+            where: {id: id, created_by: userId}
         })
     }
 }

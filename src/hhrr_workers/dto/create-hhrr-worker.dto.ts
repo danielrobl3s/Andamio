@@ -32,4 +32,8 @@ export class CreateHhrrWorkerDto {
     @Type(()=>Date)
     working_since!: Date;
 
+    @IsString()
+    @IsOptional()
+    created_by?: string;
+
 }

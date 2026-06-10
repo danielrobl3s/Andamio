@@ -1,7 +1,8 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Req, Session } from '@nestjs/common';
 import { ProjectsPropertiesService } from './projects_properties.service';
 import { CreateProjectsProperties } from './dto/create-projects-properties.dto';
 import { UpdateProjectsProperties } from './dto/update-projects-properties.dto';
+import type { UserSession } from '@thallesp/nestjs-better-auth';
 
 @Controller('projects-properties')
 export class ProjectsPropertiesController {
@@ -11,36 +12,47 @@ export class ProjectsPropertiesController {
 
 
     @Get('')
-    async getAllProperties(){
-        return this.projectsPropertiesService.getAll();
+    async getAllProperties(
+        @Session() session: UserSession,
+    ){
+        const userId = session.user.id
+        return this.projectsPropertiesService.getAll(userId);
     }
 
     @Get('/:id')
     async getOnePropertyById(
+        @Session() session: UserSession,
         @Param('id') id: string
     ){
-        return this.projectsPropertiesService.getOne(id);
+        const userId = session.user.id
+        return this.projectsPropertiesService.getOne(userId, id);
     }
 
     @Post('/create')
     async createProperty(
+        @Session() session: UserSession,
         @Body() createProjectsProperties: CreateProjectsProperties
     ){
-        return this.projectsPropertiesService.create(createProjectsProperties);
+        const userId = session.user.id
+        return this.projectsPropertiesService.create(userId, createProjectsProperties);
     }
 
     @Patch('/update/:id')
     async updateProperty(
+        @Session() session: UserSession,
         @Param('id') id: string,
         @Body() body: UpdateProjectsProperties
     ){
-        return this.projectsPropertiesService.update(id, body)
+        const userId = session.user.id
+        return this.projectsPropertiesService.update(userId, id, body)
     }
 
     @Delete('/delete/:id')
     async deleteProperty(
+        @Session() session: UserSession,
         @Param('id') id: string
     ){
-        return this.projectsPropertiesService.delete(id);
+        const userId = session.user.id
+        return this.projectsPropertiesService.delete(userId, id);
     }
 }
