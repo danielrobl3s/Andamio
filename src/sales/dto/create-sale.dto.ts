@@ -1,5 +1,5 @@
 import { Type } from "class-transformer";
-import { IsBoolean, IsDataURI, IsDate, IsNotEmpty, IsNumber, IsString, IsUUID } from "class-validator";
+import { IsBoolean, IsDataURI, IsDate, IsNotEmpty, IsNumber, IsOptional, IsString, IsUUID } from "class-validator";
 
 export class CreateSaleDto {
 
@@ -41,7 +41,7 @@ export class CreateSaleDto {
     is_credit!: boolean;
 
     @IsString()
-    @IsNotEmpty()
-    created_by!: string;
+    @IsOptional()
+    created_by?: string;
 
 }

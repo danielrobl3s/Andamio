@@ -1,4 +1,4 @@
-import { IsBoolean, IsDate, IsIn, IsJSON, IsNotEmpty, IsString, IsUUID, ValidateNested } from "class-validator";
+import { IsBoolean, IsDate, IsIn, IsJSON, IsNotEmpty, IsOptional, IsString, IsUUID, ValidateNested } from "class-validator";
 import type { Query } from "../interfaces/query.interface";
 import { Type } from "class-transformer";
 import { QueryDto } from "./query.dto";
@@ -41,7 +41,7 @@ export class CreateReportDto<T extends ModelName>{
     property_id!: string;
 
     @IsString()
-    @IsNotEmpty()
-    created_by!: string;
+    @IsOptional()
+    created_by?: string;
 
 }

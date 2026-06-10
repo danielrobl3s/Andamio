@@ -1,4 +1,4 @@
-import { IsEnum, IsNotEmpty, IsNumber, IsString } from "class-validator";
+import { IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
 import type { Gender } from "../interfaces/clients_types";
 
 export class CreateClientDto {
@@ -24,7 +24,7 @@ export class CreateClientDto {
     email!: string;
 
     @IsString()
-    @IsNotEmpty()
-    created_by!: string;
+    @IsOptional()
+    created_by?: string;
 
 }

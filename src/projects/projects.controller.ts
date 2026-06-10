@@ -7,6 +7,7 @@ import { address } from './interfaces/address.interface';
 import { UpdateProjectDto } from './dto/update-project.dto';
 import { AuthGuard, Session } from '@thallesp/nestjs-better-auth';
 import type { UserSession } from '@thallesp/nestjs-better-auth';
+import {  } from '@thallesp/nestjs-better-auth'
 import { getSession } from 'better-auth/api';
 
 @Controller('projects')
@@ -16,20 +17,24 @@ export class ProjectsController {
         private readonly projectsService: ProjectsService
     ){}
 
+    @Get('me')
+    async getProfile(
+        @Session() session: UserSession
+    ){
+        console.log(session.user.id)
+    }
+
     @Post('create')
-    @UseGuards(AuthGuard)
     async createProject(
         @Session() session: UserSession,
         @Body() createProjectDto: CreateProjectDto
 
     ){  
-
         const userId = session.user.id
         return this.projectsService.create(userId, createProjectDto)
     }
 
     @Get('/all')
-    @UseGuards(AuthGuard)
     async getAllProjects(
         @Session() session: UserSession
     ){
@@ -38,7 +43,6 @@ export class ProjectsController {
     }
 
     @Get('/:id')
-    @UseGuards(AuthGuard)
     async getOneProject(
         @Session() session: UserSession,
         @Param('id') id: string
@@ -48,7 +52,6 @@ export class ProjectsController {
     }
 
     @Patch('/update/:id')
-    @UseGuards(AuthGuard)
     async updateProject(
         @Session() session: UserSession,
         @Param('id') id: string,
@@ -59,7 +62,6 @@ export class ProjectsController {
     }
 
     @Delete('/delete/:id')
-    @UseGuards(AuthGuard)
     async deleteProject(
         @Session() session: UserSession,
         @Param('id') id: string

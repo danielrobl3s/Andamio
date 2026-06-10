@@ -33,8 +33,8 @@ export class CreateProjectDto {
     @ValidateNested() @Type(()=>AddressDto) address!: AddressDto;
 
     @IsString()
-    @IsNotEmpty()
-    created_by!: string;
+    @IsOptional()
+    created_by?: string;
 
 
 }

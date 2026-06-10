@@ -52,7 +52,9 @@ export class ProjectsService {
         }
     }
 
-    async create(user_id: unknown, createProjectDto: CreateProjectDto){
+    async create(user_id: string, createProjectDto: CreateProjectDto){
+
+        console.log(user_id)
 
         const owners_or_associates_array: OwnersOrAssociates[] = Array.isArray(createProjectDto.owners_or_associates) ? createProjectDto.owners_or_associates : [createProjectDto.owners_or_associates];
         const createdProject = await this.prismaService.project.create({
@@ -62,7 +64,7 @@ export class ProjectsService {
                 ...createProjectDto,
                 owners_or_associates: owners_or_associates_array as unknown as InputJsonValue,
                 address: createProjectDto.address as unknown as InputJsonValue,
-                created_by: user_id as string
+                created_by: user_id
             }
         })
 
