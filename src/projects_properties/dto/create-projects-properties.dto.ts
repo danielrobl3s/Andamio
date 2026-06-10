@@ -30,7 +30,7 @@ export class CreateProjectsProperties {
     end_date?: Date
 
     @IsString()
-    @IsNotEmpty()
-    created_by!: string;
+    @IsOptional()
+    created_by?: string;
 
 }

@@ -9,9 +9,12 @@ export class HhrrService {
         private readonly prismaService: PrismaService
     ){}
 
-    async create(createHhrrDto: CreateHhrrDto){
+    async create(userId: string, createHhrrDto: CreateHhrrDto){
         return this.prismaService.hhrr.create({
-            data: createHhrrDto
+            data: {
+                ...createHhrrDto,
+                created_by: userId
+            }
         });
     }
 

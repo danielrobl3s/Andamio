@@ -33,7 +33,7 @@ export class CreateHhrrWorkerDto {
     working_since!: Date;
 
     @IsString()
-    @IsNotEmpty()
-    created_by!: string;
+    @IsOptional()
+    created_by?: string;
 
 }

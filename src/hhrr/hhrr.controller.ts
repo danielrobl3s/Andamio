@@ -1,7 +1,8 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Req } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Req, Session } from '@nestjs/common';
 import { HhrrService } from './hhrr.service';
 import { CreateHhrrDto } from './dto/create-hhrr.dto';
 import { UpdateHhrrDto } from './dto/update-hhrr.dto';
+import type { UserSession } from '@thallesp/nestjs-better-auth';
 
 @Controller('hhrr')
 export class HhrrController {
@@ -11,46 +12,46 @@ export class HhrrController {
 
     @Post('/create')
     async createHhrr(
-        @Req() req: any,
+        @Session() session: UserSession,
         @Body() body: CreateHhrrDto
     ){
-        const userId = req.user.id
-        return this.hhrrService.create({...body, created_by: userId});
+        const userId = session.user.id
+        return this.hhrrService.create(userId, body);
     }
 
     @Get('')
     async getAllHhrr(
-        @Req() req: any
+        @Session() session: UserSession
     ){
-        const userId = req.user.id
+        const userId = session.user.id
         return this.hhrrService.getAll(userId);
     }
 
     @Get('/:id')
     async getHhrrById(
-        @Req() req: any,
+        @Session() session: UserSession,
         @Param('id') id: string
     ){
-        const userId = req.user.id
+        const userId = session.user.id
         return this.hhrrService.getOne(userId, id);
     }
 
     @Patch('/update/:id')
     async updateHhrr(
-        @Req() req: any,
+        @Session() session: UserSession,
         @Param('id') id: string,
         @Body() body: UpdateHhrrDto
     ){
-        const userId = req.user.id
+        const userId = session.user.id
         return this.hhrrService.update(userId, id, body);
     }
 
     @Delete('/delete/:id')
     async deleteHhrr(
-        @Req() req: any,
+        @Session() session: UserSession,
         @Param('id') id: string
     ){
-        const userId = req.user.id
+        const userId = session.user.id
         return this.hhrrService.delete(userId, id);
     }
 }

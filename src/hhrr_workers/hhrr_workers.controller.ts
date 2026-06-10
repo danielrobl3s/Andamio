@@ -1,7 +1,8 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Req } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Req, Session } from '@nestjs/common';
 import { HhrrWorkersService } from './hhrr_workers.service';
 import { CreateHhrrWorkerDto } from './dto/create-hhrr-worker.dto';
 import { UpdateHhrrWorkerDto } from './dto/update-hhrr-worker.dto';
+import type { UserSession } from '@thallesp/nestjs-better-auth';
 
 @Controller('hhrr-workers')
 export class HhrrWorkersController {
@@ -12,46 +13,46 @@ export class HhrrWorkersController {
 
     @Post('/create')
     async createHhrrWorker(
-        @Req() req: any,
+        @Session() session: UserSession,
         @Body() body: CreateHhrrWorkerDto
     ){
-        const userId = req.user.id;
+        const userId = session.user.id;
         return this.hhrrWorkersService.create(userId, body);
     }
 
     @Get('')
     async getAllHhrrWorkers(
-        @Req() req: any
+        @Session() session: UserSession
     ){
-        const userId = req.user.id;
+        const userId = session.user.id;
         return this.hhrrWorkersService.getAll(userId);
     }
 
     @Get('/:id')
     async getHhrrWorkerById(
-        @Req() req: any,
+        @Session() session: UserSession,
         @Param('id') id: string
     ){
-        const userId = req.user.id;
+        const userId = session.user.id;
         return this.hhrrWorkersService.getOne(userId, id)
     }
 
     @Patch('/update/:id')
     async updateHhrrWorker(
-        @Req() req: any,
+        @Session() session: UserSession,
         @Param('id') id: string,
         @Body() body: UpdateHhrrWorkerDto
     ){
-        const userId = req.user.id;
+        const userId = session.user.id;
         return this.hhrrWorkersService.update(userId, id, body)
     }
 
     @Delete('/delete/:id')
     async deleteHhrrWorker(
-        @Req() req: any,
+        @Session() session: UserSession,
         @Param('id') id: string
     ){  
-        const userId = req.user.id;
+        const userId = session.user.id;
         return this.hhrrWorkersService.delete(userId, id)
     }
 }
