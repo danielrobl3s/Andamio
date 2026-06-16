@@ -1,22 +1,22 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post, Req, Session } from '@nestjs/common';
-import { HhrrService } from './hhrr.service';
-import { CreateHhrrDto } from './dto/create-hhrr.dto';
-import { UpdateHhrrDto } from './dto/update-hhrr.dto';
+import { ExpensesService } from './expenses.service';
+import { CreateExpenseDto } from './dto/create-expense.dto';
+import { UpdateExpenseDto } from './dto/update-expense.dto';
 import type { UserSession } from '@thallesp/nestjs-better-auth';
 
-@Controller('hhrr')
-export class HhrrController {
+@Controller('expenses')
+export class ExpensesController {
     constructor(
-        private readonly hhrrService: HhrrService
+        private readonly expensesService: ExpensesService
     ){}
 
     @Post('/create')
     async createHhrr(
         @Session() session: UserSession,
-        @Body() body: CreateHhrrDto
+        @Body() body: CreateExpenseDto
     ){
         const userId = session.user.id
-        return this.hhrrService.create(userId, body);
+        return this.expensesService.create(userId, body);
     }
 
     @Get('')
@@ -24,7 +24,7 @@ export class HhrrController {
         @Session() session: UserSession
     ){
         const userId = session.user.id
-        return this.hhrrService.getAll(userId);
+        return this.expensesService.getAll(userId);
     }
 
     @Get('/:id')
@@ -33,17 +33,17 @@ export class HhrrController {
         @Param('id') id: string
     ){
         const userId = session.user.id
-        return this.hhrrService.getOne(userId, id);
+        return this.expensesService.getOne(userId, id);
     }
 
     @Patch('/update/:id')
     async updateHhrr(
         @Session() session: UserSession,
         @Param('id') id: string,
-        @Body() body: UpdateHhrrDto
+        @Body() body: UpdateExpenseDto
     ){
         const userId = session.user.id
-        return this.hhrrService.update(userId, id, body);
+        return this.expensesService.update(userId, id, body);
     }
 
     @Delete('/delete/:id')
@@ -52,6 +52,6 @@ export class HhrrController {
         @Param('id') id: string
     ){
         const userId = session.user.id
-        return this.hhrrService.delete(userId, id);
+        return this.expensesService.delete(userId, id);
     }
 }

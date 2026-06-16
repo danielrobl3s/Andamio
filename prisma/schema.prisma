@@ -51,7 +51,7 @@ model Sales {
   @@map("sales")
 }
 
-model HhrrWorker {
+model Labor {
   id                     String   @id @default(uuid())
   worker_name            String   @map("worker_name")
   worker_lastname        String   @map("worker_lastname")
@@ -67,12 +67,12 @@ model HhrrWorker {
   created_by             String   @map("created_by")
   creator                User     @relation(fields: [created_by], references: [id], onDelete: Cascade)
 
-  hhrrRecords Hhrr[]
+  laborRecords Expenses[]
 
-  @@map("hhrr_workers")
+  @@map("labor")
 }
 
-model Hhrr {
+model Expenses {
   id              String   @id @default(uuid())
   worker_id       String?  @map("worker_id")
   worker_name     String   @map("worker_name")
@@ -91,11 +91,11 @@ model Hhrr {
   created_by      String   @map("created_by")
   creator         User     @relation(fields: [created_by], references: [id], onDelete: Cascade)
 
-  worker   HhrrWorker?         @relation(fields: [worker_id], references: [id])
+  worker   Labor?         @relation(fields: [worker_id], references: [id])
   project  Project?            @relation(fields: [project_id], references: [id])
   property ProjectsProperties? @relation(fields: [property_id], references: [id])
 
-  @@map("hhrr")
+  @@map("expenses")
 }
 
 model Project {
@@ -114,7 +114,7 @@ model Project {
   creator              User      @relation(fields: [created_by], references: [id], onDelete: Cascade)
 
   properties  ProjectsProperties[]
-  hhrrRecords Hhrr[]
+  hhrrRecords Expenses[]
   reports     Report[]
   sales       Sales[]
 
@@ -138,7 +138,7 @@ model ProjectsProperties {
 
   project Project? @relation(fields: [project_id], references: [id])
   sales   Sales?
-  hhrr    Hhrr[]
+  hhrr    Expenses[]
   reports Report[]
 
   @@map("projects_properties")
@@ -181,8 +181,8 @@ model User {
   // Back-relations for data ownership isolation
   clients            Client[]
   sales              Sales[]
-  hhrrWorkers        HhrrWorker[]
-  hhrrRecords        Hhrr[]
+  hhrrWorkers        Labor[]
+  hhrrRecords        Expenses[]
   projects           Project[]
   projectsProperties ProjectsProperties[]
   reports            Report[]

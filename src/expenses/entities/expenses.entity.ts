@@ -1,4 +1,4 @@
-export class HhhrEntity {
+export class ExpensesEntity {
     id!: string;
     worker_id!: string;
     worker_name!: string;
@@ -14,7 +14,7 @@ export class HhhrEntity {
     updated_at!: Date;
     created_by!: string;
 
-    constructor(partial: Partial<HhhrEntity>){
+    constructor(partial: Partial<ExpensesEntity>){
         Object.assign(this, partial);
     }
 }

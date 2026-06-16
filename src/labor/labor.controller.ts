@@ -1,23 +1,23 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post, Req, Session } from '@nestjs/common';
-import { HhrrWorkersService } from './hhrr_workers.service';
-import { CreateHhrrWorkerDto } from './dto/create-hhrr-worker.dto';
-import { UpdateHhrrWorkerDto } from './dto/update-hhrr-worker.dto';
+import { LaborService } from './labor.service';
+import { CreateLaborDto } from './dto/create-labor.dto';
+import { UpdateLaborDto } from './dto/update-labor.dto';
 import type { UserSession } from '@thallesp/nestjs-better-auth';
 
-@Controller('hhrr-workers')
-export class HhrrWorkersController {
+@Controller('labor')
+export class LaborController {
     constructor(
-        private readonly hhrrWorkersService: HhrrWorkersService
+        private readonly laborService: LaborService
     ){}
 
 
     @Post('/create')
     async createHhrrWorker(
         @Session() session: UserSession,
-        @Body() body: CreateHhrrWorkerDto
+        @Body() body: CreateLaborDto
     ){
         const userId = session.user.id;
-        return this.hhrrWorkersService.create(userId, body);
+        return this.laborService.create(userId, body);
     }
 
     @Get('')
@@ -25,7 +25,7 @@ export class HhrrWorkersController {
         @Session() session: UserSession
     ){
         const userId = session.user.id;
-        return this.hhrrWorkersService.getAll(userId);
+        return this.laborService.getAll(userId);
     }
 
     @Get('/:id')
@@ -34,17 +34,17 @@ export class HhrrWorkersController {
         @Param('id') id: string
     ){
         const userId = session.user.id;
-        return this.hhrrWorkersService.getOne(userId, id)
+        return this.laborService.getOne(userId, id)
     }
 
     @Patch('/update/:id')
     async updateHhrrWorker(
         @Session() session: UserSession,
         @Param('id') id: string,
-        @Body() body: UpdateHhrrWorkerDto
+        @Body() body: UpdateLaborDto
     ){
         const userId = session.user.id;
-        return this.hhrrWorkersService.update(userId, id, body)
+        return this.laborService.update(userId, id, body)
     }
 
     @Delete('/delete/:id')
@@ -53,6 +53,6 @@ export class HhrrWorkersController {
         @Param('id') id: string
     ){  
         const userId = session.user.id;
-        return this.hhrrWorkersService.delete(userId, id)
+        return this.laborService.delete(userId, id)
     }
 }

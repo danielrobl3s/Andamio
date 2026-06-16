@@ -5,8 +5,8 @@ export const modelFilters = {
     project: {} as Prisma.ProjectWhereInput,
     projectsProperties: {} as Prisma.ProjectsPropertiesWhereInput,
     sales: {} as Prisma.SalesWhereInput,
-    hhrr: {} as Prisma.HhrrWhereInput,
-    hhrrWorker: {} as Prisma.HhrrWorkerWhereInput,
+    hhrr: {} as Prisma.ExpensesWhereInput,
+    hhrrWorker: {} as Prisma.LaborWhereInput,
     client: {} as Prisma.ClientWhereInput
 } as const;
 

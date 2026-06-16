@@ -1,4 +1,4 @@
-export class CreateHHRRWorkerEntity {
+export class CreateLaborEntity {
     id!: string;
     worker_name!: string;
     worker_lastname!: string;
@@ -12,7 +12,7 @@ export class CreateHHRRWorkerEntity {
     created_by!: string;
 
 
-    constructor(partial: Partial<CreateHHRRWorkerEntity>){
+    constructor(partial: Partial<CreateLaborEntity>){
         Object.assign(this, partial)
     }
 }
