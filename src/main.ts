@@ -10,6 +10,8 @@ async function bootstrap() {
     bodyParser: false,
   });
 
+  app.use('/api/auth/*', toNodeHandler(auth));
+
   app.use(cookieParser());
 
   app.enableCors({
