@@ -11,7 +11,8 @@ export const auth = betterAuth({
         process.env.BETTER_AUTH_URL!, 
         "http://localhost:3001", 
         "http://localhost:3000",
-        "http://localhost:5173"
+        "http://localhost:5173",
+        "https://andamio-frontend.vercel.app/"
     ],
     plugins: [
         bearer()
