@@ -14,10 +14,10 @@ async function bootstrap() {
   app.use(cookieParser());
 
   app.enableCors({
-    origin: [process.env.BETTER_AUTH_URL!,
+    origin: [
       "http://localhost:3001",
       "http://localhost:5173",
-      "https://andamio-frontend.vercel.app/"
+      "https://andamio-frontend.vercel.app",
     ],
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
