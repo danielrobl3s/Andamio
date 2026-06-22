@@ -22,7 +22,7 @@ export const auth = betterAuth({
         },
         defaultCookieAttributes: {
             secure: process.env.NODE_ENV === 'production',
-            sameSite: 'lax',
+            sameSite: 'none',
         }
 	},
     database: prismaAdapter(prisma, {
