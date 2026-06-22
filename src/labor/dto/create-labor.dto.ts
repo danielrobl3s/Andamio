@@ -1,7 +1,7 @@
 import { Type } from "class-transformer";
 import { IsBoolean, IsDate, IsNotEmpty, IsOptional, IsString } from "class-validator";
 
-export class CreateHhrrWorkerDto {
+export class CreateLaborDto {
     
     @IsString()
     @IsNotEmpty()

@@ -1,7 +1,7 @@
 import { Type } from "class-transformer";
 import { IsBoolean, IsDate, IsNotEmpty, IsNumber, IsOptional, IsString, IsUUID } from "class-validator";
 
-export class CreateHhrrDto {
+export class CreateExpenseDto {
 
     @IsUUID()
     @IsNotEmpty()

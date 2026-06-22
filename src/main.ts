@@ -10,7 +10,9 @@ async function bootstrap() {
   });
 
   app.enableCors({
-    origin: process.env.BETTER_AUTH_URL!,
+    origin: [process.env.BETTER_AUTH_URL!,
+      "http://localhost:3001"
+    ],
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
 		allowedHeaders: ['Content-Type', 'Authorization'],
@@ -20,6 +22,14 @@ async function bootstrap() {
     forbidNonWhitelisted: true,
     transform: true
   }))
+
+  app.use((req: any, _res: any, next: any) => {
+    console.log(`[${req.method}] ${req.url}`);
+    console.log('Headers:', req.headers);
+    console.log('COOKIES:', req.headers.cookie);
+    console.log('Body:', req.body);
+    next();
+  });
   
   await app.listen(process.env.PORT ?? 3000);
 }
