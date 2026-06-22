@@ -13,6 +13,7 @@ import { ReportsModule } from './reports/reports.module';
 import { auth } from './lib/auth';
 import { AuthGuard, AuthModule } from '@thallesp/nestjs-better-auth';
 import { APP_GUARD } from '@nestjs/core';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -24,7 +25,8 @@ import { APP_GUARD } from '@nestjs/core';
     LaborModule, 
     ExpensesModule, 
     ReportsModule,
-    AuthModule.forRoot({auth})
+    AuthModule.forRoot({auth}),
+    AuthModule
   ],
   controllers: [AppController],
   providers: [
