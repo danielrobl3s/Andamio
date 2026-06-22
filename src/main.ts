@@ -16,7 +16,8 @@ async function bootstrap() {
   app.enableCors({
     origin: [process.env.BETTER_AUTH_URL!,
       "http://localhost:3001",
-      "http://localhost:5173"
+      "http://localhost:5173",
+      "https://andamio-frontend.vercel.app/"
     ],
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
