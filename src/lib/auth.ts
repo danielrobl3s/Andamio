@@ -21,8 +21,9 @@ export const auth = betterAuth({
             enabled: false,
         },
         defaultCookieAttributes: {
-            secure: process.env.NODE_ENV === 'production',
-            sameSite: 'none',
+            secure: true,
+            sameSite: 'lax',
+            httpOnly: true
         }
 	},
     database: prismaAdapter(prisma, {

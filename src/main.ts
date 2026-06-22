@@ -3,11 +3,14 @@ import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import { auth } from './lib/auth';
 import { toNodeHandler } from 'better-auth/node';
+import cookieParser from 'cookie-parser'
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     bodyParser: false,
   });
+
+  app.use(cookieParser());
 
   app.enableCors({
     origin: [process.env.BETTER_AUTH_URL!,
@@ -32,6 +35,6 @@ async function bootstrap() {
     next();
   });
   
-  await app.listen(process.env.PORT ?? 3000);
+  await app.listen(8080);
 }
 bootstrap();
