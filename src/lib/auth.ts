@@ -15,7 +15,7 @@ export const auth = betterAuth({
         "https://andamio-frontend.vercel.app"
     ],
     plugins: [
-        bearer()
+        
     ],
     advanced: {
         crossSubDomainCookies: {
@@ -24,6 +24,8 @@ export const auth = betterAuth({
         defaultCookieAttributes: {
             sameSite: 'none',
             secure: true,
+            httpOnly:true,
+            partitioned: true
         },
     },
     database: prismaAdapter(prisma, {
