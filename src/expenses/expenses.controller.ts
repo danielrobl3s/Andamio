@@ -1,9 +1,11 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Req, Session } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Req, Session, UseGuards } from '@nestjs/common';
+import { AuthGuard } from '@thallesp/nestjs-better-auth';
 import { ExpensesService } from './expenses.service';
 import { CreateExpenseDto } from './dto/create-expense.dto';
 import { UpdateExpenseDto } from './dto/update-expense.dto';
 import type { UserSession } from '@thallesp/nestjs-better-auth';
 
+@UseGuards(AuthGuard)
 @Controller('expenses')
 export class ExpensesController {
     constructor(

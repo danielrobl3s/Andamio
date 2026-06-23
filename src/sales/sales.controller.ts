@@ -1,9 +1,11 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Req } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Req, UseGuards } from '@nestjs/common';
+import { AuthGuard } from '@thallesp/nestjs-better-auth';
 import { SalesService } from './sales.service';
 import { CreateSaleDto } from './dto/create-sale.dto';
 import { UpdateClientDto } from '../clients/dto/update-client.dto';
 import { UpdateSaleDto } from './dto/update-sale.dto';
 
+@UseGuards(AuthGuard)
 @Controller('sales')
 export class SalesController {
 
