@@ -13,18 +13,18 @@ async function bootstrap() {
 
   app.getHttpAdapter().getInstance().set('trust proxy', 1);
 
-  app.use(cookieParser());
-
   app.enableCors({
     origin: [
       "http://localhost:3001",
       "http://localhost:5173",
       "https://andamio-frontend.vercel.app",
     ],
-    credentials: 'include',
+    credentials: true,
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-		allowedHeaders: ['Content-Type', 'Authorization'],
-  })
+    allowedHeaders: ['Content-Type', 'Authorization'],
+  });
+
+  app.use(cookieParser());
   app.useGlobalPipes(new ValidationPipe({
     whitelist: true,
     forbidNonWhitelisted: true,
