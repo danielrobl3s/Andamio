@@ -21,7 +21,7 @@ async function bootstrap() {
       "http://localhost:5173",
       "https://andamio-frontend.vercel.app",
     ],
-    credentials: true,
+    credentials: 'include',
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
 		allowedHeaders: ['Content-Type', 'Authorization'],
   })
