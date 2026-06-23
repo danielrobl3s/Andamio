@@ -4,6 +4,7 @@ import { ValidationPipe } from '@nestjs/common';
 import { auth } from './lib/auth';
 import { toNodeHandler } from 'better-auth/node';
 import cookieParser from 'cookie-parser'
+import { Expose } from 'class-transformer';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
@@ -21,7 +22,8 @@ async function bootstrap() {
     ],
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'Cookie'],
+    exposedHeaders: [ 'Set-Cookie' ]
   });
 
   app.use(cookieParser());
