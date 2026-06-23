@@ -26,6 +26,10 @@ export const auth = betterAuth({
         provider: 'postgresql',
     }),
 
+    account: {
+        skipStateCookieCheck: true,
+    },
+
     emailAndPassword: {
         enabled: true,
     },
