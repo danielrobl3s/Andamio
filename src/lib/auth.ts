@@ -9,8 +9,7 @@ export const auth = betterAuth({
     baseURL: process.env.BETTER_AUTH_URL!,
     secret: process.env.BETTER_AUTH_SECRET,
     trustedOrigins: [
-        process.env.BETTER_AUTH_URL!, 
-        "http://localhost:3001", 
+        "http://localhost:3001",
         "http://localhost:3000",
         "http://localhost:5173",
         "https://andamio-frontend.vercel.app"
@@ -20,14 +19,10 @@ export const auth = betterAuth({
     ],
     advanced: {
         useSecureCookies: true,
-        crossSubDomainCookies: {
-            enabled: true,
-        },
         defaultCookieAttributes: {
             sameSite: 'none',
             secure: true,
-            httpOnly:true,
-            partitioned: true,
+            httpOnly: true,
         },
     },
     database: prismaAdapter(prisma, {
