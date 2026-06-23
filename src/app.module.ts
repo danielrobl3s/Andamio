@@ -23,7 +23,7 @@ import { AuthModule } from '@thallesp/nestjs-better-auth';
     LaborModule, 
     ExpensesModule, 
     ReportsModule,
-    AuthModule.forRoot({ auth, disableGlobalAuthGuard: true, disableTrustedOriginsCors: true }),
+    AuthModule.forRoot({ auth, disableGlobalAuthGuard: true }),
   ],
   controllers: [AppController],
   providers: [
