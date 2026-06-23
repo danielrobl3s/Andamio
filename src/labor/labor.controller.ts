@@ -1,9 +1,11 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Req, Session } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Req, Session, UseGuards } from '@nestjs/common';
+import { AuthGuard } from '@thallesp/nestjs-better-auth';
 import { LaborService } from './labor.service';
 import { CreateLaborDto } from './dto/create-labor.dto';
 import { UpdateLaborDto } from './dto/update-labor.dto';
 import type { UserSession } from '@thallesp/nestjs-better-auth';
 
+@UseGuards(AuthGuard)
 @Controller('labor')
 export class LaborController {
     constructor(

@@ -1,4 +1,5 @@
-import { Body, Controller, Delete, Get, NotFoundException, Param, Patch, Post, Session } from '@nestjs/common';
+import { Body, Controller, Delete, Get, NotFoundException, Param, Patch, Post, Session, UseGuards } from '@nestjs/common';
+import { AuthGuard } from '@thallesp/nestjs-better-auth';
 import { ReportsService } from './reports.service';
 import { CreateReportDto } from './dto/create-report.dto';
 import { ModelName } from './interfaces/filters.types';
@@ -6,6 +7,7 @@ import { UpdateReportDto } from './dto/update-report.dto';
 import { QueryDto } from './dto/query.dto';
 import type { UserSession } from '@thallesp/nestjs-better-auth';
 
+@UseGuards(AuthGuard)
 @Controller('reports')
 export class ReportsController {
     constructor(

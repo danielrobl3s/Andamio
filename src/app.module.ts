@@ -11,8 +11,7 @@ import { LaborModule } from './labor/labor.module'
 import { ExpensesModule } from './expenses/expenses.module';
 import { ReportsModule } from './reports/reports.module';
 import { auth } from './lib/auth';
-import { AuthGuard, AuthModule } from '@thallesp/nestjs-better-auth';
-import { APP_GUARD } from '@nestjs/core';
+import { AuthModule } from '@thallesp/nestjs-better-auth';
 
 @Module({
   imports: [
@@ -28,9 +27,8 @@ import { APP_GUARD } from '@nestjs/core';
   ],
   controllers: [AppController],
   providers: [
-    AppService, 
+    AppService,
     PrismaService,
-    { provide: APP_GUARD, useValue: AuthGuard}
   ],
 })
 export class AppModule {}

@@ -10,6 +10,7 @@ import type { UserSession } from '@thallesp/nestjs-better-auth';
 import {  } from '@thallesp/nestjs-better-auth'
 import { getSession } from 'better-auth/api';
 
+@UseGuards(AuthGuard)
 @Controller('projects')
 export class ProjectsController {
 
