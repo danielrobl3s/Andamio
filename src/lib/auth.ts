@@ -1,7 +1,6 @@
 import { betterAuth } from 'better-auth';
 import { prismaAdapter } from 'better-auth/adapters/prisma'
 import { PrismaClient } from '@prisma/client';
-import { bearer } from 'better-auth/plugins/bearer';
 
 const prisma = new PrismaClient();
 
@@ -21,9 +20,15 @@ export const auth = betterAuth({
         
     ],
     advanced: {
+        crossSubDomainCookies: {
+            enabled: true,
+            domain: ".im4ps.com",
+        },
+
         useSecureCookies: true,
+
         defaultCookieAttributes: {
-            sameSite: 'none',
+            sameSite: 'lax',
             secure: true,
             httpOnly: true,
             path: "/",
@@ -32,10 +37,6 @@ export const auth = betterAuth({
     database: prismaAdapter(prisma, {
         provider: 'postgresql',
     }),
-
-    account: {
-        skipStateCookieCheck: true,
-    },
 
     emailAndPassword: {
         enabled: true,
