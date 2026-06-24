@@ -19,6 +19,8 @@ async function bootstrap() {
       "http://localhost:3001",
       "http://localhost:5173",
       "https://andamio-frontend.vercel.app",
+      "https://im4ps.com",
+      "https://www.im4ps.com"
     ],
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
