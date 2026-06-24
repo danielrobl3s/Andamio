@@ -12,7 +12,10 @@ export const auth = betterAuth({
         "http://localhost:3001",
         "http://localhost:3000",
         "http://localhost:5173",
-        "https://andamio-frontend.vercel.app"
+        "https://andamio-frontend.vercel.app",
+        "https://www.andamio-frontend.vercel.app",
+        "https://im4ps.com",
+        "https://www.im4ps.com"
     ],
     plugins: [
         
@@ -23,6 +26,7 @@ export const auth = betterAuth({
             sameSite: 'none',
             secure: true,
             httpOnly: true,
+            path: "/",
         },
     },
     database: prismaAdapter(prisma, {
