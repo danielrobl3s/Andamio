@@ -13,8 +13,8 @@ export const auth = betterAuth({
         "http://localhost:5173",
         "https://andamio-frontend.vercel.app",
         "https://www.andamio-frontend.vercel.app",
-        "https://im4ps.com",
-        "https://www.im4ps.com"
+        "https://andamiohub.com",
+        "https://www.andamiohub.com"
     ],
     plugins: [
         
@@ -22,7 +22,7 @@ export const auth = betterAuth({
     advanced: {
         crossSubDomainCookies: {
             enabled: true,
-            domain: ".im4ps.com",
+            domain: ".andamiohub.com",
         },
 
         useSecureCookies: true,
