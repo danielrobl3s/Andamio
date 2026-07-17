@@ -7,12 +7,11 @@ import { ProjectsPropertiesModule } from './projects_properties/projects_propert
 import { ClientsModule } from './clients/clients.module';
 import { SalesModule } from './sales/sales.module';
 import { PrismaService } from './prisma/prisma.service';
-import { HhrrWorkersModule } from './hhrr_workers/hhrr_workers.module';
-import { HhrrModule } from './hhrr/hhrr.module';
+import { LaborModule } from './labor/labor.module'
+import { ExpensesModule } from './expenses/expenses.module';
 import { ReportsModule } from './reports/reports.module';
 import { auth } from './lib/auth';
-import { AuthGuard, AuthModule } from '@thallesp/nestjs-better-auth';
-import { APP_GUARD } from '@nestjs/core';
+import { AuthModule } from '@thallesp/nestjs-better-auth';
 
 @Module({
   imports: [
@@ -21,16 +20,15 @@ import { APP_GUARD } from '@nestjs/core';
     ProjectsPropertiesModule, 
     ClientsModule, 
     SalesModule, 
-    HhrrWorkersModule, 
-    HhrrModule, 
+    LaborModule, 
+    ExpensesModule, 
     ReportsModule,
-    AuthModule.forRoot({auth})
+    AuthModule.forRoot({ auth, disableGlobalAuthGuard: true }),
   ],
   controllers: [AppController],
   providers: [
-    AppService, 
+    AppService,
     PrismaService,
-    { provide: APP_GUARD, useValue: AuthGuard}
   ],
 })
 export class AppModule {}
