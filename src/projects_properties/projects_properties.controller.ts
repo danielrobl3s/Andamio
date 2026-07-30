@@ -1,9 +1,10 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Req, Session } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Req, Session, UseGuards } from '@nestjs/common';
 import { ProjectsPropertiesService } from './projects_properties.service';
 import { CreateProjectsProperties } from './dto/create-projects-properties.dto';
 import { UpdateProjectsProperties } from './dto/update-projects-properties.dto';
-import type { UserSession } from '@thallesp/nestjs-better-auth';
+import { AuthGuard, type UserSession } from '@thallesp/nestjs-better-auth';
 
+@UseGuards(AuthGuard)
 @Controller('projects-properties')
 export class ProjectsPropertiesController {
     constructor(
