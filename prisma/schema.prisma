@@ -18,12 +18,64 @@ model Client {
   updated_at   DateTime @updatedAt @map("updated_at")
 
   // Auth Relation fields
-  created_by   String   @map("created_by")
-  creator      User     @relation(fields: [created_by], references: [id], onDelete: Cascade)
+  created_by String @map("created_by")
+  creator    User   @relation(fields: [created_by], references: [id], onDelete: Cascade)
 
-  sales Sales[]
+  contracts Contract[]
+  sales     Sales[]
 
   @@map("clients")
+}
+
+enum ContractStatus {
+  not_paid              @map("not-paid")
+  only_advanced_payment @map("only-advanced-payment")
+  pending
+  paid
+}
+
+model Contract {
+  id               String         @id @default(uuid())
+  name             String
+  type             String
+  amount           Decimal        @db.Decimal(10, 2)
+  status           ContractStatus @default(not_paid)
+  remaining_amount Decimal        @map("remaining_amount") @db.Decimal(10, 2)
+  created_at       DateTime       @default(now()) @map("created_at")
+  updated_at       DateTime       @updatedAt @map("updated_at")
+
+  client_id String @map("client_id")
+  client    Client @relation(fields: [client_id], references: [id], onDelete: Cascade)
+
+  // Auth Relation fields
+  created_by String @map("created_by")
+  creator    User   @relation(fields: [created_by], references: [id], onDelete: Cascade)
+
+  clientLogs ClientLog[]
+
+  @@map("contracts")
+}
+
+model ClientLog {
+  id              String         @id @default(uuid())
+  name            String?
+  lastname        String?
+  phone           String?
+  contract_id     String         @map("contract_id")
+  contract_name   String         @map("contract_name")
+  payment_type    String         @map("payment_type")
+  amount          Decimal        @db.Decimal(10, 2)
+  contract_status ContractStatus @map("contract_status")
+  created_at      DateTime       @default(now()) @map("created_at")
+  updated_at      DateTime       @updatedAt @map("updated_at")
+
+  contract Contract @relation(fields: [contract_id], references: [id], onDelete: Cascade)
+
+  // Auth Relation fields
+  created_by String @map("created_by")
+  creator    User   @relation(fields: [created_by], references: [id], onDelete: Cascade)
+
+  @@map("client_logs")
 }
 
 model Sales {
@@ -41,8 +93,8 @@ model Sales {
   updated_at      DateTime @updatedAt @map("updated_at")
 
   // Auth Relation fields
-  created_by      String   @map("created_by")
-  creator         User     @relation(fields: [created_by], references: [id], onDelete: Cascade)
+  created_by String @map("created_by")
+  creator    User   @relation(fields: [created_by], references: [id], onDelete: Cascade)
 
   client   Client              @relation(fields: [client_id], references: [id])
   project  Project?            @relation(fields: [project_id], references: [id])
@@ -64,8 +116,8 @@ model Labor {
   updated_at             DateTime @updatedAt @map("updated_at")
 
   // Auth Relation fields
-  created_by             String   @map("created_by")
-  creator                User     @relation(fields: [created_by], references: [id], onDelete: Cascade)
+  created_by String @map("created_by")
+  creator    User   @relation(fields: [created_by], references: [id], onDelete: Cascade)
 
   laborRecords Expenses[]
 
@@ -75,10 +127,10 @@ model Labor {
 model Expenses {
   id              String   @id @default(uuid())
   worker_id       String?  @map("worker_id")
-  worker_name     String   @map("worker_name")
-  worker_lastname String   @map("worker_lastname")
-  phone_number    String   @map("phone_number")
-  payroll         Boolean
+  worker_name     String?  @map("worker_name")
+  worker_lastname String?  @map("worker_lastname")
+  phone_number    String?  @map("phone_number")
+  payroll         Boolean?
   amount          Decimal  @db.Decimal(10, 2)
   date            DateTime
   project_id      String?  @map("project_id")
@@ -88,10 +140,10 @@ model Expenses {
   updated_at      DateTime @updatedAt @map("updated_at")
 
   // Auth Relation fields
-  created_by      String   @map("created_by")
-  creator         User     @relation(fields: [created_by], references: [id], onDelete: Cascade)
+  created_by String @map("created_by")
+  creator    User   @relation(fields: [created_by], references: [id], onDelete: Cascade)
 
-  worker   Labor?         @relation(fields: [worker_id], references: [id])
+  worker   Labor?              @relation(fields: [worker_id], references: [id])
   project  Project?            @relation(fields: [project_id], references: [id])
   property ProjectsProperties? @relation(fields: [property_id], references: [id])
 
@@ -110,8 +162,8 @@ model Project {
   updated_at           DateTime  @updatedAt @map("updated_at")
 
   // Auth Relation fields
-  created_by           String    @map("created_by")
-  creator              User      @relation(fields: [created_by], references: [id], onDelete: Cascade)
+  created_by String @map("created_by")
+  creator    User   @relation(fields: [created_by], references: [id], onDelete: Cascade)
 
   properties  ProjectsProperties[]
   hhrrRecords Expenses[]
@@ -126,17 +178,17 @@ model ProjectsProperties {
   project_id       String?   @map("project_id")
   property_name    String    @map("property_name")
   number_of_lots   Int       @map("number_of_lots")
-  estimated_budget Decimal   @db.Decimal(10, 2) @map("estimated_budget")
+  estimated_budget Decimal   @map("estimated_budget") @db.Decimal(10, 2)
   start_date       DateTime  @map("start_date")
   end_date         DateTime? @map("end_date")
   created_at       DateTime  @default(now()) @map("created_at")
   updated_at       DateTime  @updatedAt @map("updated_at")
 
   // Auth Relation fields
-  created_by       String    @map("created_by")
-  creator          User      @relation(fields: [created_by], references: [id], onDelete: Cascade)
+  created_by String @map("created_by")
+  creator    User   @relation(fields: [created_by], references: [id], onDelete: Cascade)
 
-  project Project? @relation(fields: [project_id], references: [id])
+  project Project?   @relation(fields: [project_id], references: [id])
   sales   Sales?
   hhrr    Expenses[]
   reports Report[]
@@ -153,16 +205,16 @@ model Report {
   is_bill     Boolean  @map("is_bill")
   issued_by   String   @map("issued_by")
   project_id  String   @map("project_id")
-  property_id String   @map("property_id")
+  property_id String?  @map("property_id")
   created_at  DateTime @default(now()) @map("created_at")
   updated_at  DateTime @updatedAt @map("updated_at")
 
   // Auth Relation fields
-  created_by  String   @map("created_by")
-  creator     User     @relation(fields: [created_by], references: [id], onDelete: Cascade)
+  created_by String @map("created_by")
+  creator    User   @relation(fields: [created_by], references: [id], onDelete: Cascade)
 
-  project  Project            @relation(fields: [project_id], references: [id])
-  property ProjectsProperties @relation(fields: [property_id], references: [id])
+  project  Project             @relation(fields: [project_id], references: [id])
+  property ProjectsProperties? @relation(fields: [property_id], references: [id])
 
   @@map("reports")
 }
@@ -177,9 +229,11 @@ model User {
   updatedAt     DateTime  @updatedAt
   sessions      Session[]
   accounts      Account[]
-  
+
   // Back-relations for data ownership isolation
   clients            Client[]
+  contracts          Contract[]
+  clientLogs         ClientLog[]
   sales              Sales[]
   hhrrWorkers        Labor[]
   hhrrRecords        Expenses[]
