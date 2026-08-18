@@ -1,9 +1,10 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Query, Session } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query, Session, UseGuards } from '@nestjs/common';
 import { ClientLogsService } from './client_logs.service';
-import type { UserSession } from '@thallesp/nestjs-better-auth';
+import { AuthGuard, type UserSession } from '@thallesp/nestjs-better-auth';
 import { CreateClientLogDto } from './dto/create-client_log.dto';
 
 
+@UseGuards(AuthGuard)
 @Controller('client-logs')
 export class ClientLogsController {
     constructor(
