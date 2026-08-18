@@ -12,6 +12,8 @@ import { ExpensesModule } from './expenses/expenses.module';
 import { ReportsModule } from './reports/reports.module';
 import { auth } from './lib/auth';
 import { AuthModule } from '@thallesp/nestjs-better-auth';
+import { ContractsModule } from './contracts/contracts.module';
+import { ClientLogsModule } from './client_logs/client_logs.module';
 
 @Module({
   imports: [
@@ -24,6 +26,8 @@ import { AuthModule } from '@thallesp/nestjs-better-auth';
     ExpensesModule, 
     ReportsModule,
     AuthModule.forRoot({ auth, disableGlobalAuthGuard: true }),
+    ContractsModule,
+    ClientLogsModule,
   ],
   controllers: [AppController],
   providers: [
