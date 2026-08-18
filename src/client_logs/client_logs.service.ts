@@ -10,18 +10,20 @@ export class ClientLogsService {
     ) {}
 
 
-    async getClientLogs(userId: string) {
+    async getClientLogs(userId: string, contractId?: string) {
         return await this.prismaService.clientLog.findMany({
             where: {
+                contract_id: contractId,
                 created_by: userId}
         });
     }
 
 
-    async getClientLogById(userId: string, logId: string) {
+    async getClientLogById(userId: string, logId: string, contractId?: string) {
         return await this.prismaService.clientLog.findUnique({
             where: {
                 id: logId,
+                contract_id: contractId,
                 created_by: userId
             }
         });
@@ -32,6 +34,7 @@ export class ClientLogsService {
         return await this.prismaService.clientLog.create({
             data: {
                 ...data,
+                contract_id: data.contract_id,
                 created_by: userId
             }
         });

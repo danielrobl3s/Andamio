@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Session } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query, Session } from '@nestjs/common';
 import { ClientLogsService } from './client_logs.service';
 import type { UserSession } from '@thallesp/nestjs-better-auth';
 import { CreateClientLogDto } from './dto/create-client_log.dto';
@@ -13,20 +13,22 @@ export class ClientLogsController {
 
     @Get('')
     async getClientLogs(
-        @Session() session: UserSession
+        @Session() session: UserSession,
+        @Query() contractId?: string,
     ){
         const userId = session.user.id;
-        return await this.clientLogsService.getClientLogs(userId);
+        return await this.clientLogsService.getClientLogs(userId, contractId);
     }
 
 
     @Get('/:id')
     async getClientLogById(
         @Session() session: UserSession,
-        @Param('id') id: string
+        @Param('id') id: string,
+        @Query() contractId?: string,
     ){
         const userId = session.user.id;
-        return await this.clientLogsService.getClientLogById(userId, id);
+        return await this.clientLogsService.getClientLogById(userId, id, contractId);
     }
 
 
