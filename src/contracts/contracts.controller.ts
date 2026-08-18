@@ -17,7 +17,7 @@ export class ContractsController {
     @Get('/')
     async getContracts(
         @Session() session: UserSession,
-        @Query() clientId?: string,
+        @Query('client_id') clientId?: string,
     ) {
         const userId = session.user.id;
         return await this.contractsService.getContracts(userId, clientId);
@@ -27,7 +27,7 @@ export class ContractsController {
     async getContractById(
         @Session() session: UserSession,
         @Param('id') id: string,
-        @Query() clientId?: string,
+        @Query('client_id') clientId?: string,
     ) {
         const userId = session.user.id;
         return await this.contractsService.getContractById(id, userId, clientId);

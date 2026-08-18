@@ -21,9 +21,9 @@ export class CreateContractDto {
     @IsNotEmpty()
     status!: ContractStatus;
 
-    @IsEnum(ContractStatus)
+    @IsNumber()
     @IsNotEmpty()
-    remaining_amount!: ContractStatus;
+    remaining_amount!: number;
 
     @IsString()
     @IsNotEmpty()

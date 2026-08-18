@@ -14,7 +14,7 @@ export class ClientLogsController {
     @Get('')
     async getClientLogs(
         @Session() session: UserSession,
-        @Query() contractId?: string,
+        @Query('contract_id') contractId?: string,
     ){
         const userId = session.user.id;
         return await this.clientLogsService.getClientLogs(userId, contractId);
@@ -25,7 +25,7 @@ export class ClientLogsController {
     async getClientLogById(
         @Session() session: UserSession,
         @Param('id') id: string,
-        @Query() contractId?: string,
+        @Query('contract_id') contractId?: string,
     ){
         const userId = session.user.id;
         return await this.clientLogsService.getClientLogById(userId, id, contractId);
