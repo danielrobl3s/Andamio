@@ -10,19 +10,21 @@ export class ContractsService {
     ) {}
 
 
-    async getContracts(userId: string){
+    async getContracts(userId: string, clientId?: string){
         return await this.prismaService.contract.findMany({
             where: {
+                client_id: clientId,
                 created_by: userId
             }
         });
     }
 
 
-    async getContractById(id: string, userId: string){
+    async getContractById(id: string, userId: string, clientId?: string){
         return await this.prismaService.contract.findUnique({
             where: {
                 id: id,
+                client_id: clientId,
                 created_by: userId
             }
         })
