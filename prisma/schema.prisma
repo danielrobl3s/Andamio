@@ -21,6 +21,9 @@ model Client {
   created_by String @map("created_by")
   creator    User   @relation(fields: [created_by], references: [id], onDelete: Cascade)
 
+  project_id String?  @map("project_id")
+  project    Project? @relation(fields: [project_id], references: [id])
+
   contracts Contract[]
   sales     Sales[]
 
@@ -169,6 +172,7 @@ model Project {
   hhrrRecords Expenses[]
   reports     Report[]
   sales       Sales[]
+  clients     Client[]
 
   @@map("projects")
 }
