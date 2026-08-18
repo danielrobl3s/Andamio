@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Patch, Post, Session, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query, Session, UseGuards } from '@nestjs/common';
 import { ContractsService } from './contracts.service';
 import { AuthGuard } from '@thallesp/nestjs-better-auth';
 import type { UserSession } from '@thallesp/nestjs-better-auth';
@@ -17,18 +17,20 @@ export class ContractsController {
     @Get('/')
     async getContracts(
         @Session() session: UserSession,
+        @Query() clientId?: string,
     ) {
         const userId = session.user.id;
-        return await this.contractsService.getContracts(userId);
+        return await this.contractsService.getContracts(userId, clientId);
     }
 
     @Get('/:id')
     async getContractById(
         @Session() session: UserSession,
-        @Param('id') id: string
+        @Param('id') id: string,
+        @Query() clientId?: string,
     ) {
         const userId = session.user.id;
-        return await this.contractsService.getContractById(id, userId);
+        return await this.contractsService.getContractById(id, userId, clientId);
     }
 
     @Post('/create')
@@ -48,5 +50,15 @@ export class ContractsController {
     ){
         const userId = session.user.id;
         return await this.contractsService.updateContract(id, data, userId);
+    }
+
+
+    @Delete('/delete/:id')
+    async deleteContract(
+        @Session() session: UserSession,
+        @Param('id') id: string
+    ){
+        const userId = session.user.id;
+        return await this.contractsService.deleteContract(id, userId);
     }
 }
