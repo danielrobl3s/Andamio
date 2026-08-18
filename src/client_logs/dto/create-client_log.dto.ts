@@ -3,7 +3,7 @@ import { Type } from "class-transformer";
 import { IsDate, IsEnum, IsNotEmpty, IsNumber, IsString } from "class-validator";
 
 
-export class CreateContractDto {
+export class CreateClientLogDto {
     
     @IsString()
     @IsNotEmpty()
@@ -11,7 +11,23 @@ export class CreateContractDto {
 
     @IsString()
     @IsNotEmpty()
-    type!: string;
+    lastname!: string;
+
+    @IsString()
+    @IsNotEmpty()
+    phone!: string;
+
+    @IsString()
+    @IsNotEmpty()
+    contract_id!: string;
+
+    @IsString()
+    @IsNotEmpty()
+    contract_name!: string;
+
+    @IsString()
+    @IsNotEmpty()
+    payment_type!: string;
 
     @IsNumber()
     @IsNotEmpty()
@@ -19,18 +35,9 @@ export class CreateContractDto {
 
     @IsEnum(ContractStatus)
     @IsNotEmpty()
-    status!: ContractStatus;
-
-    @IsEnum(ContractStatus)
-    @IsNotEmpty()
-    remaining_amount!: ContractStatus;
-
-    @IsString()
-    @IsNotEmpty()
-    client_id!: string;
+    contract_status!: ContractStatus;
 
     @IsString()
     @IsNotEmpty()
     created_by!: string;
-
 }
