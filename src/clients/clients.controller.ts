@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Query, Post, Req, UseGuards } from '@nestjs/common';
 import { ClientsService } from './clients.service';
 import { CreateClientDto } from './dto/create-client.dto';
 import { UpdateClientDto } from './dto/update-client.dto';
@@ -15,7 +15,7 @@ export class ClientsController {
     @UseGuards(AuthGuard)
     async createClient(
         @Req() req: any,
-        @Param('project_id') projectId: string,
+        @Query('project_id') projectId: string,
         @Body() body: CreateClientDto
     ){  
         const userId = req.user.id
@@ -26,7 +26,7 @@ export class ClientsController {
     @UseGuards(AuthGuard)
     async getAllClients(
         @Req() req: any,
-        @Param('project_id') projectId: string
+        @Query('project_id') projectId: string
     )
     {
         const userId = req.user.id
@@ -38,7 +38,7 @@ export class ClientsController {
     async getClientById(
         @Req() req: any,
         @Param('id') id: string,
-        @Param('project_id') projectId: string
+        @Query('project_id') projectId: string
     ){
         const userId = req.user.id
         return this.clientsService.getOne(userId, id, projectId);
@@ -49,7 +49,7 @@ export class ClientsController {
     async updateClient(
         @Req() req: any,
         @Param('id') id: string,
-        @Param('project_id') projectId: string,
+        @Query('project_id') projectId: string,
         @Body() body: UpdateClientDto
     ){
         const userId = req.user.id
