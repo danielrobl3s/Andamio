@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Req, Session, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query, Req, Session, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@thallesp/nestjs-better-auth';
 import { ExpensesService } from './expenses.service';
 import { CreateExpenseDto } from './dto/create-expense.dto';
@@ -23,10 +23,11 @@ export class ExpensesController {
 
     @Get('')
     async getAllHhrr(
-        @Session() session: UserSession
+        @Session() session: UserSession,
+        @Query('project_id') projectId?: string
     ){
         const userId = session.user.id
-        return this.expensesService.getAll(userId);
+        return this.expensesService.getAll(userId, projectId);
     }
 
     @Get('/:id')
