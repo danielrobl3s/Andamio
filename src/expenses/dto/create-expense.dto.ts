@@ -4,24 +4,24 @@ import { IsBoolean, IsDate, IsNotEmpty, IsNumber, IsOptional, IsString, IsUUID }
 export class CreateExpenseDto {
 
     @IsUUID()
-    @IsNotEmpty()
-    worker_id!: string;
+    @IsOptional()
+    worker_id?: string;
 
     @IsString()
-    @IsNotEmpty()
-    worker_name!: string;
+    @IsOptional()
+    worker_name?: string;
 
     @IsString()
-    @IsNotEmpty()
-    worker_lastname!: string;
+    @IsOptional()
+    worker_lastname?: string;
 
     @IsString()
-    @IsNotEmpty()
-    phone_number!: string;
+    @IsOptional()
+    phone_number?: string;
 
     @IsBoolean()
-    @IsNotEmpty()
-    payroll!: boolean;
+    @IsOptional()
+    payroll?: boolean;
 
     @IsNumber()
     @IsNotEmpty()
