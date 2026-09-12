@@ -173,6 +173,7 @@ model Project {
   reports     Report[]
   sales       Sales[]
   clients     Client[]
+  materials   Material[]
 
   @@map("projects")
 }
@@ -223,6 +224,82 @@ model Report {
   @@map("reports")
 }
 
+model Vendor {
+  id           String   @id @default(uuid())
+  name         String
+  phone_number String?  @map("phone_number")
+  address      String?
+  created_at   DateTime @default(now()) @map("created_at")
+  updated_at   DateTime @updatedAt @map("updated_at")
+
+  // Auth Relation fields
+  created_by String @map("created_by")
+  creator    User   @relation(fields: [created_by], references: [id], onDelete: Cascade)
+
+  catalogues Catalogue[]
+
+  @@map("vendors")
+}
+
+model Catalogue {
+  id            String   @id @default(uuid())
+  vendor_id     String   @map("vendor_id")
+  name          String
+  material_type String?  @map("material_type")
+  created_at    DateTime @default(now()) @map("created_at")
+  updated_at    DateTime @updatedAt @map("updated_at")
+
+  // Auth Relation fields
+  created_by String @map("created_by")
+  creator    User   @relation(fields: [created_by], references: [id], onDelete: Cascade)
+
+  vendor             Vendor              @relation(fields: [vendor_id], references: [id], onDelete: Cascade)
+  catalogueMaterials CatalogueMaterial[]
+
+  @@map("catalogues")
+}
+
+model CatalogueMaterial {
+  id               String   @id @default(uuid())
+  catalogue_id     String   @map("catalogue_id")
+  material_name    String   @map("material_name")
+  unitary_price    Decimal  @map("unitary_price") @db.Decimal(10, 2)
+  measurement_unit String   @map("measurement_unit")
+  brand            String?
+  created_at       DateTime @default(now()) @map("created_at")
+  updated_at       DateTime @updatedAt @map("updated_at")
+
+  // Auth Relation fields
+  created_by String @map("created_by")
+  creator    User   @relation(fields: [created_by], references: [id], onDelete: Cascade)
+
+  catalogue Catalogue  @relation(fields: [catalogue_id], references: [id], onDelete: Cascade)
+  materials Material[]
+
+  @@map("catalogue_materials")
+}
+
+model Material {
+  id                     String   @id @default(uuid())
+  catalogue_material_id  String   @map("catalogue_material_id")
+  concept                String
+  project_id             String?  @map("project_id")
+  quantity               Decimal? @db.Decimal(10, 2)
+  total_price            Decimal  @map("total_price") @db.Decimal(10, 2)
+  status                 String?
+  created_at             DateTime @default(now()) @map("created_at")
+  updated_at             DateTime @updatedAt @map("updated_at")
+
+  // Auth Relation fields
+  created_by String @map("created_by")
+  creator    User   @relation(fields: [created_by], references: [id], onDelete: Cascade)
+
+  catalogueMaterial CatalogueMaterial @relation(fields: [catalogue_material_id], references: [id], onDelete: Cascade)
+  project           Project?          @relation(fields: [project_id], references: [id])
+
+  @@map("materials")
+}
+
 model User {
   id            String    @id
   name          String
@@ -244,6 +321,10 @@ model User {
   projects           Project[]
   projectsProperties ProjectsProperties[]
   reports            Report[]
+  vendors            Vendor[]
+  catalogues         Catalogue[]
+  catalogueMaterials CatalogueMaterial[]
+  materials          Material[]
 
   @@unique([email])
   @@map("user")
