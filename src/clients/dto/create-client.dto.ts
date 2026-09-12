@@ -27,4 +27,8 @@ export class CreateClientDto {
     @IsOptional()
     created_by?: string;
 
+    @IsString()
+    @IsOptional()
+    project_id?: string;
+
 }

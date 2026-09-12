@@ -11,31 +11,33 @@ export class ClientsService {
 
     async create(
         userId: any,
+        projectId: string,
         createClientDto: CreateClientDto
     ){
         return await this.prismaService.client.create({
             data: {
                 ...createClientDto,
+                project_id: projectId,
                 created_by: userId
             }
         })
     }
 
-    async getAll(userId: any){
+    async getAll(userId: any, projectId: string){
         return this.prismaService.client.findMany({
-            where: {created_by: userId}
+            where: {created_by: userId, project_id: projectId}
         });
     }
 
-    async getOne(userId: any, id: string){
+    async getOne(userId: any, id: string, projectId: string){
         return this.prismaService.client.findUnique({
-            where: {id: id, created_by: userId}
+            where: {id: id, created_by: userId, project_id: projectId}
         })
     }
 
-    async update(userId: any, id: string, updateClientDto: UpdateClientDto){
+    async update(userId: any, id: string, updateClientDto: UpdateClientDto, projectId: string){
         return this.prismaService.client.update({
-            where: {id: id, created_by: userId},
+            where: {id: id, created_by: userId, project_id: projectId},
             data: updateClientDto
         })
     }

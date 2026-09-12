@@ -10,6 +10,7 @@ export class ClientsEntity {
     created_at!: Date;
     updated_at!: Date;
     created_by!: string;
+    project_id?: string;
 
     constructor(partial: Partial<ClientsEntity>){
         Object.assign(this, partial)

@@ -18,10 +18,11 @@ export class ExpensesService {
         });
     }
 
-    async getAll(userId: string){
+    async getAll(userId: string, projectId?: string){
         return this.prismaService.expenses.findMany({
             where: {
-                created_by: userId
+                created_by: userId,
+                project_id: projectId
             }
         });
     }
