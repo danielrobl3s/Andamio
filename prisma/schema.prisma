@@ -281,9 +281,13 @@ model CatalogueMaterial {
 
 model Material {
   id                     String   @id @default(uuid())
-  catalogue_material_id  String   @map("catalogue_material_id")
+  catalogue_material_id  String?   @map("catalogue_material_id")
   concept                String
   project_id             String?  @map("project_id")
+  vendor_name            String?  @map("vendor_name")
+  material_name          String?  @map("material_name")
+  unitary_price          Decimal? @map("unitary_price") @db.Decimal(10, 2)
+  brand                  String?
   quantity               Decimal? @db.Decimal(10, 2)
   total_price            Decimal  @map("total_price") @db.Decimal(10, 2)
   status                 String?
@@ -294,7 +298,7 @@ model Material {
   created_by String @map("created_by")
   creator    User   @relation(fields: [created_by], references: [id], onDelete: Cascade)
 
-  catalogueMaterial CatalogueMaterial @relation(fields: [catalogue_material_id], references: [id], onDelete: Cascade)
+  catalogueMaterial CatalogueMaterial? @relation(fields: [catalogue_material_id], references: [id], onDelete: Cascade)
   project           Project?          @relation(fields: [project_id], references: [id])
 
   @@map("materials")
