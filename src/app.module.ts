@@ -14,6 +14,7 @@ import { auth } from './lib/auth';
 import { AuthModule } from '@thallesp/nestjs-better-auth';
 import { ContractsModule } from './contracts/contracts.module';
 import { ClientLogsModule } from './client_logs/client_logs.module';
+import { MaterialsModule } from './materials/materials.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { ClientLogsModule } from './client_logs/client_logs.module';
     AuthModule.forRoot({ auth, disableGlobalAuthGuard: true }),
     ContractsModule,
     ClientLogsModule,
+    MaterialsModule,
   ],
   controllers: [AppController],
   providers: [

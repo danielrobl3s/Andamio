@@ -279,6 +279,14 @@ model CatalogueMaterial {
   @@map("catalogue_materials")
 }
 
+enum MaterialStatus {
+  shipped_and_paid
+  pending_payment
+  pending_shipment
+  pending_shipment_and_payment
+  returned
+}
+
 model Material {
   id                     String   @id @default(uuid())
   catalogue_material_id  String?   @map("catalogue_material_id")
@@ -288,9 +296,9 @@ model Material {
   material_name          String?  @map("material_name")
   unitary_price          Decimal? @map("unitary_price") @db.Decimal(10, 2)
   brand                  String?
-  quantity               Decimal? @db.Decimal(10, 2)
+  quantity               Decimal @db.Decimal(10, 2)
   total_price            Decimal  @map("total_price") @db.Decimal(10, 2)
-  status                 String?
+  status                 MaterialStatus @map("status")
   created_at             DateTime @default(now()) @map("created_at")
   updated_at             DateTime @updatedAt @map("updated_at")
 
