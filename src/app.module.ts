@@ -15,6 +15,7 @@ import { AuthModule } from '@thallesp/nestjs-better-auth';
 import { ContractsModule } from './contracts/contracts.module';
 import { ClientLogsModule } from './client_logs/client_logs.module';
 import { MaterialsModule } from './materials/materials.module';
+import { VendorsModule } from './vendors/vendors.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { MaterialsModule } from './materials/materials.module';
     ContractsModule,
     ClientLogsModule,
     MaterialsModule,
+    VendorsModule,
   ],
   controllers: [AppController],
   providers: [
