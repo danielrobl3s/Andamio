@@ -20,7 +20,8 @@ async function bootstrap() {
       "http://localhost:5173",
       "https://andamio-frontend.vercel.app",
       "https://andamiohub.com",
-      "https://www.andamiohub.com"
+      "https://www.andamiohub.com",
+      "https://andamio-frontend-eta.vercel.app/"
     ],
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
