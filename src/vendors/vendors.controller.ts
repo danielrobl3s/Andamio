@@ -34,7 +34,7 @@ export class VendorsController {
         @Param('id') id: string,
         @Body() body: UpdateVendorDto
     ){
-        return this.vendorsService.updateVendor(id, body);
+        return await this.vendorsService.updateVendor(id, body);
     }
 
     @Delete('/delete/:id')

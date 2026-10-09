@@ -16,6 +16,8 @@ import { ContractsModule } from './contracts/contracts.module';
 import { ClientLogsModule } from './client_logs/client_logs.module';
 import { MaterialsModule } from './materials/materials.module';
 import { VendorsModule } from './vendors/vendors.module';
+import { CataloguesModule } from './catalogues/catalogues.module';
+import { CatalogueMaterialsModule } from './catalogue_materials/catalogue_materials.module';
 
 @Module({
   imports: [
@@ -32,6 +34,8 @@ import { VendorsModule } from './vendors/vendors.module';
     ClientLogsModule,
     MaterialsModule,
     VendorsModule,
+    CataloguesModule,
+    CatalogueMaterialsModule,
   ],
   controllers: [AppController],
   providers: [
