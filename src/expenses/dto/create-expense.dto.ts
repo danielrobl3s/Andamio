@@ -1,27 +1,32 @@
 import { Type } from "class-transformer";
-import { IsBoolean, IsDate, IsNotEmpty, IsNumber, IsOptional, IsString, IsUUID } from "class-validator";
+import { IsBoolean, IsDate, IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString, IsUUID } from "class-validator";
+import { ExpenseKind } from "../interfaces/enums.interface";
 
 export class CreateExpenseDto {
 
+    @IsEnum(ExpenseKind)
+    @IsOptional()
+    kind?: ExpenseKind;
+
     @IsUUID()
     @IsOptional()
-    worker_id?: string;
+    worker_id?: string | null;
 
     @IsString()
     @IsOptional()
-    worker_name?: string;
+    worker_name?: string | null;
 
     @IsString()
     @IsOptional()
-    worker_lastname?: string;
+    worker_lastname?: string | null;
 
     @IsString()
     @IsOptional()
-    phone_number?: string;
+    phone_number?: string | null;
 
     @IsBoolean()
     @IsOptional()
-    payroll?: boolean;
+    payroll?: boolean | null;
 
     @IsNumber()
     @IsNotEmpty()
