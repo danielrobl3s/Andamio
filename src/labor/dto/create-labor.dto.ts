@@ -8,16 +8,16 @@ export class CreateLaborDto {
     worker_name!: string;
 
     @IsString()
-    @IsNotEmpty()
-    worker_lastname!: string;
+    @IsOptional()
+    worker_lastname?: string | null;
 
     @IsString()
-    @IsNotEmpty()
-    phone!: string;
+    @IsOptional()
+    phone?: string | null;
 
     @IsBoolean()
-    @IsNotEmpty()
-    has_insurance!: boolean;
+    @IsOptional()
+    has_insurance?: boolean;
 
     @IsString()
     @IsOptional()
@@ -28,9 +28,9 @@ export class CreateLaborDto {
     job?: string;
 
     @IsDate()
-    @IsNotEmpty()
+    @IsOptional()
     @Type(()=>Date)
-    working_since!: Date;
+    working_since?: Date;
 
     @IsString()
     @IsOptional()

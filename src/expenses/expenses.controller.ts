@@ -1,8 +1,9 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Query, Req, Session, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseEnumPipe, Patch, Post, Query, Req, Session, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@thallesp/nestjs-better-auth';
 import { ExpensesService } from './expenses.service';
 import { CreateExpenseDto } from './dto/create-expense.dto';
 import { UpdateExpenseDto } from './dto/update-expense.dto';
+import { ExpenseKind } from './interfaces/enums.interface';
 import type { UserSession } from '@thallesp/nestjs-better-auth';
 
 @UseGuards(AuthGuard)
@@ -24,10 +25,11 @@ export class ExpensesController {
     @Get('')
     async getAllHhrr(
         @Session() session: UserSession,
-        @Query('project_id') projectId?: string
+        @Query('project_id') projectId?: string,
+        @Query('kind', new ParseEnumPipe(ExpenseKind, { optional: true })) kind?: ExpenseKind
     ){
         const userId = session.user.id
-        return this.expensesService.getAll(userId, projectId);
+        return this.expensesService.getAll(userId, projectId, kind);
     }
 
     @Get('/:id')
