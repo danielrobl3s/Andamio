@@ -66,9 +66,11 @@ model ClientLog {
   phone           String?
   contract_id     String         @map("contract_id")
   contract_name   String         @map("contract_name")
-  payment_type    String         @map("payment_type")
+  payment_type    String?        @map("payment_type")
   amount          Decimal        @db.Decimal(10, 2)
   contract_status ContractStatus @map("contract_status")
+  date            DateTime       @default(now())
+  notes           String?
   created_at      DateTime       @default(now()) @map("created_at")
   updated_at      DateTime       @updatedAt @map("updated_at")
 
