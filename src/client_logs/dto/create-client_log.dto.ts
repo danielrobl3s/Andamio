@@ -1,21 +1,21 @@
 import { ContractStatus } from "@prisma/client";
 import { Type } from "class-transformer";
-import { IsDate, IsEnum, IsNotEmpty, IsNumber, IsString } from "class-validator";
+import { IsDate, IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString, ValidateIf } from "class-validator";
 
 
 export class CreateClientLogDto {
     
     @IsString()
-    @IsNotEmpty()
-    name!: string;
+    @IsOptional()
+    name?: string | null;
 
     @IsString()
-    @IsNotEmpty()
-    lastname!: string;
+    @IsOptional()
+    lastname?: string | null;
 
     @IsString()
-    @IsNotEmpty()
-    phone!: string;
+    @IsOptional()
+    phone?: string | null;
 
     @IsString()
     @IsNotEmpty()
@@ -26,8 +26,8 @@ export class CreateClientLogDto {
     contract_name!: string;
 
     @IsString()
-    @IsNotEmpty()
-    payment_type!: string;
+    @IsOptional()
+    payment_type?: string | null;
 
     @IsNumber()
     @IsNotEmpty()
@@ -36,6 +36,16 @@ export class CreateClientLogDto {
     @IsEnum(ContractStatus)
     @IsNotEmpty()
     contract_status!: ContractStatus;
+
+    // Not nullable: omit it to default to now(), but an explicit null is a 400
+    @ValidateIf((_, value) => value !== undefined)
+    @IsDate()
+    @Type(()=>Date)
+    date?: Date;
+
+    @IsString()
+    @IsOptional()
+    notes?: string | null;
 
     @IsString()
     @IsNotEmpty()
