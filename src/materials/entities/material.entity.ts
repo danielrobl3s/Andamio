@@ -13,6 +13,7 @@ export class CreateMaterialEntity {
     quantity!: number;
     total_price!: number;
     status!: MaterialStatus;
+    date!: Date;
     created_at!: Date;
     updated_at!: Date
     created_by!: string;
