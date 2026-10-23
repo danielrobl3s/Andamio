@@ -14,8 +14,4 @@ export class CreateCatalogueDto {
     @IsOptional()
     material_type?: string;
 
-    @IsString()
-    @IsNotEmpty()
-    created_by!: string;
-
 }

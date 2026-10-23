@@ -10,38 +10,46 @@ export class VendorsService {
     ) {}
 
 
-    async getAllVendors(){
-        return await this.prismaService.vendor.findMany();
+    async getAllVendors(userId: string){
+        return await this.prismaService.vendor.findMany({
+            where: {created_by: userId}
+        });
     }
 
 
-    async getVendorById(id: string){
+    async getVendorById(userId: string, id: string){
         return await this.prismaService.vendor.findUnique({
             where: {
-                id: id
+                id: id,
+                created_by: userId
             }
         })
     }
 
-    async createVendor(createVendorDto: CreateVendorDto){
+    async createVendor(userId: string, createVendorDto: CreateVendorDto){
         return await this.prismaService.vendor.create({
-            data: createVendorDto
+            data: {
+                ...createVendorDto,
+                created_by: userId
+            }
         })
     }
 
-    async updateVendor(id: string, updateVendorDto: UpdateVendorDto){
+    async updateVendor(userId: string, id: string, updateVendorDto: UpdateVendorDto){
         return await this.prismaService.vendor.update({
             where: {
-                id: id
+                id: id,
+                created_by: userId
             },
             data: updateVendorDto
         })
     }
 
-    async deleteVendor(id: string){
+    async deleteVendor(userId: string, id: string){
         return await this.prismaService.vendor.delete({
             where: {
-                id: id
+                id: id,
+                created_by: userId
             }
         })
     }

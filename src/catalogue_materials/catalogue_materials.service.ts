@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateCatalogueMaterialDto } from './dto/create-catalogue_material.dto';
 import { UpdateCatalogueMaterialDto } from './dto/update-catalogue_material.dto';
@@ -9,39 +9,60 @@ export class CatalogueMaterialsService {
         private readonly prismaService: PrismaService
     ) {}
 
-
-    async getAllCatalogueMaterials(){
-        return await this.prismaService.catalogueMaterial.findMany();
+    private async assertCatalogueOwned(userId: string, catalogueId: string){
+        const catalogue = await this.prismaService.catalogue.findFirst({
+            where: {id: catalogueId, created_by: userId}
+        });
+        if (!catalogue) {
+            throw new BadRequestException('catalogue_id does not match one of your catalogues');
+        }
     }
 
 
-    async getCatalogueMaterialById(id: string){
+    async getAllCatalogueMaterials(userId: string){
+        return await this.prismaService.catalogueMaterial.findMany({
+            where: {created_by: userId}
+        });
+    }
+
+
+    async getCatalogueMaterialById(userId: string, id: string){
         return await this.prismaService.catalogueMaterial.findUnique({
             where: {
-                id: id
+                id: id,
+                created_by: userId
             }
         })
     }
 
-    async createCatalogueMaterial(createCatalogueMaterialDto: CreateCatalogueMaterialDto){
+    async createCatalogueMaterial(userId: string, createCatalogueMaterialDto: CreateCatalogueMaterialDto){
+        await this.assertCatalogueOwned(userId, createCatalogueMaterialDto.catalogue_id);
         return await this.prismaService.catalogueMaterial.create({
-            data: createCatalogueMaterialDto
+            data: {
+                ...createCatalogueMaterialDto,
+                created_by: userId
+            }
         })
     }
 
-    async updateCatalogueMaterial(id: string, updateCatalogueMaterialDto: UpdateCatalogueMaterialDto){
+    async updateCatalogueMaterial(userId: string, id: string, updateCatalogueMaterialDto: UpdateCatalogueMaterialDto){
+        if (updateCatalogueMaterialDto.catalogue_id) {
+            await this.assertCatalogueOwned(userId, updateCatalogueMaterialDto.catalogue_id);
+        }
         return await this.prismaService.catalogueMaterial.update({
             where: {
-                id: id
+                id: id,
+                created_by: userId
             },
             data: updateCatalogueMaterialDto
         })
     }
 
-    async deleteCatalogueMaterial(id: string){
+    async deleteCatalogueMaterial(userId: string, id: string){
         return await this.prismaService.catalogueMaterial.delete({
             where: {
-                id: id
+                id: id,
+                created_by: userId
             }
         })
     }
