@@ -1,5 +1,5 @@
 import { Type } from "class-transformer";
-import { IsBoolean, IsDate, IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
+import { IsBoolean, IsDate, IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString, ValidateIf } from "class-validator";
 import { MaterialStatus } from "../interfaces/enums.interface";
 
 export class CreateMaterialDto {
@@ -43,8 +43,10 @@ export class CreateMaterialDto {
     @IsEnum(MaterialStatus)
     status!: MaterialStatus;
 
-    @IsString()
-    @IsNotEmpty()
-    created_by!: string;
+    // Not nullable: omit it to default to now(), but an explicit null is a 400
+    @ValidateIf((_, value) => value !== undefined)
+    @IsDate()
+    @Type(()=>Date)
+    date?: Date;
 
 }

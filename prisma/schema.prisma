@@ -66,9 +66,11 @@ model ClientLog {
   phone           String?
   contract_id     String         @map("contract_id")
   contract_name   String         @map("contract_name")
-  payment_type    String         @map("payment_type")
+  payment_type    String?        @map("payment_type")
   amount          Decimal        @db.Decimal(10, 2)
   contract_status ContractStatus @map("contract_status")
+  date            DateTime       @default(now())
+  notes           String?
   created_at      DateTime       @default(now()) @map("created_at")
   updated_at      DateTime       @updatedAt @map("updated_at")
 
@@ -109,12 +111,12 @@ model Sales {
 model Labor {
   id                     String   @id @default(uuid())
   worker_name            String   @map("worker_name")
-  worker_lastname        String   @map("worker_lastname")
-  phone                  String
-  has_insurance          Boolean  @map("has_insurance")
+  worker_lastname        String?  @map("worker_lastname")
+  phone                  String?
+  has_insurance          Boolean  @default(false) @map("has_insurance")
   social_security_number String?  @map("social_security_number")
   job                    String?
-  working_since          DateTime @map("working_since")
+  working_since          DateTime @default(now()) @map("working_since")
   created_at             DateTime @default(now()) @map("created_at")
   updated_at             DateTime @updatedAt @map("updated_at")
 
@@ -127,8 +129,14 @@ model Labor {
   @@map("labor")
 }
 
+enum ExpenseKind {
+  labor
+  indirect
+}
+
 model Expenses {
   id              String   @id @default(uuid())
+  kind            ExpenseKind @default(indirect)
   worker_id       String?  @map("worker_id")
   worker_name     String?  @map("worker_name")
   worker_lastname String?  @map("worker_lastname")
@@ -299,6 +307,7 @@ model Material {
   quantity               Decimal @db.Decimal(10, 2)
   total_price            Decimal  @map("total_price") @db.Decimal(10, 2)
   status                 MaterialStatus @map("status")
+  date                   DateTime @default(now())
   created_at             DateTime @default(now()) @map("created_at")
   updated_at             DateTime @updatedAt @map("updated_at")
 

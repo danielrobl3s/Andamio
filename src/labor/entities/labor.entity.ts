@@ -1,8 +1,8 @@
 export class CreateLaborEntity {
     id!: string;
     worker_name!: string;
-    worker_lastname!: string;
-    phone!: string;
+    worker_lastname?: string | null;
+    phone?: string | null;
     has_insurance!: boolean;
     social_security_number?: string;
     job?: string;

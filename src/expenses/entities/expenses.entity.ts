@@ -1,10 +1,13 @@
+import { ExpenseKind } from "../interfaces/enums.interface";
+
 export class ExpensesEntity {
     id!: string;
-    worker_id!: string;
-    worker_name!: string;
-    worker_lastname!: string;
-    phone_number!: string;
-    payroll!: boolean;
+    kind!: ExpenseKind;
+    worker_id?: string | null;
+    worker_name?: string | null;
+    worker_lastname?: string | null;
+    phone_number?: string | null;
+    payroll?: boolean | null;
     amount!: number;
     date!: Date;
     project_id?: string;
