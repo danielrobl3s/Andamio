@@ -15,8 +15,4 @@ export class CreateVendorDto {
     @IsOptional()
     address?: string;
 
-    @IsString()
-    @IsNotEmpty()
-    created_by!: string;
-
 }

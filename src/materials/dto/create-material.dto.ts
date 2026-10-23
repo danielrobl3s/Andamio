@@ -49,8 +49,4 @@ export class CreateMaterialDto {
     @Type(()=>Date)
     date?: Date;
 
-    @IsString()
-    @IsNotEmpty()
-    created_by!: string;
-
 }

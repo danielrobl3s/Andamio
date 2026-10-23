@@ -22,8 +22,4 @@ export class CreateCatalogueMaterialDto {
     @IsOptional()
     brand?: string;
 
-    @IsString()
-    @IsNotEmpty()
-    created_by!: string;
-
 }
