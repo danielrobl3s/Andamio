@@ -1,98 +1,149 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# Home Builder Software
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+Backend API for managing home-building projects: properties, clients and sales, contracts and payments, labor, expenses, vendors, material purchases and reports. Built with NestJS, Prisma and PostgreSQL, with authentication handled by Better Auth.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## Tech stack
 
-## Description
+| Layer | Tool |
+| --- | --- |
+| Framework | [NestJS](https://nestjs.com/) 11 (TypeScript) |
+| Database | PostgreSQL via [Prisma](https://www.prisma.io/) 6 |
+| Auth | [Better Auth](https://www.better-auth.com/) (email/password + Google) through `@thallesp/nestjs-better-auth` |
+| Validation | `class-validator` / `class-transformer` |
+| Package manager | pnpm |
+| Deployment | Docker (Node 22) |
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## Getting started
 
-## Project setup
+### Prerequisites
+
+- Node.js 22+
+- pnpm (`corepack enable`)
+- A PostgreSQL database
+
+### Setup
 
 ```bash
-$ pnpm install
+# 1. Install dependencies
+pnpm install
+
+# 2. Create a .env file (see "Environment variables" below)
+
+# 3. Generate the Prisma client and apply migrations to your local database
+pnpm prisma generate
+pnpm prisma migrate deploy
+
+# 4. Run the API
+pnpm start:dev
 ```
 
-## Compile and run the project
+The API listens on **http://localhost:8080**.
+
+### Environment variables
+
+| Variable | Description |
+| --- | --- |
+| `DATABASE_URL` | PostgreSQL connection string |
+| `BETTER_AUTH_SECRET` | Secret used to sign sessions. Generate one with `openssl rand -base64 32` |
+| `BETTER_AUTH_URL` | Public base URL of this API (e.g. `http://localhost:8080`) |
+| `GOOGLE_CLIENT_ID` | Google OAuth client id |
+| `GOOGLE_CLIENT_SECRET` | Google OAuth client secret |
+| `NODE_ENV` | `production` enables secure and cross-subdomain cookies |
+
+Never commit your `.env` file. It is already in `.gitignore`.
+
+### Scripts
+
+| Command | What it does |
+| --- | --- |
+| `pnpm start:dev` | Run in watch mode |
+| `pnpm start` | Run once |
+| `pnpm build` | Compile to `dist/` |
+| `pnpm start:prod` | Run the compiled build |
+| `pnpm lint` | Lint and auto-fix |
+| `pnpm format` | Format with Prettier |
+| `pnpm test` | Run unit tests (Jest) |
+
+## Project structure
+
+```
+prisma/
+  schema.prisma        Data model
+  migrations/          SQL migrations (applied automatically on deploy)
+src/
+  main.ts              Bootstrap: CORS, cookies, global validation
+  app.module.ts        Root module
+  lib/auth.ts          Better Auth configuration
+  <module>/            One folder per resource:
+    <module>.controller.ts   Routes
+    <module>.service.ts      Business logic and Prisma queries
+    dto/                     Request validation (create / update)
+    entities/                Response shapes
+```
+
+## Modules
+
+| Module | Base route | Purpose |
+| --- | --- | --- |
+| Projects | `/projects` | Construction projects (`GET /projects/me` for the current user's) |
+| Projects properties | `/projects-properties` | Lots / properties inside a project |
+| Clients | `/clients` | Buyers |
+| Sales | `/sales` | Sales of properties to clients |
+| Contracts | `/contracts` | Contracts with clients and their payment status |
+| Client logs | `/client-logs` | Payments made against a contract (`?contract_id=` to filter) |
+| Labor | `/labor` | Registered workers |
+| Expenses | `/expenses` | Labor payments and indirect expenses (`?project_id=`, `?kind=labor\|indirect`) |
+| Vendors | `/vendors` | Material suppliers |
+| Catalogues | `/catalogues` | A vendor's catalogues |
+| Catalogue materials | `/catalogue-materials` | Priced items inside a catalogue |
+| Materials | `/materials` | Material purchases |
+| Reports | `/reports` | Saved queries (`GET /reports/executeQuery/:id` runs one) |
+
+Better Auth serves its own sign-in / sign-up / session endpoints under `/api/auth/*`.
+
+### Route conventions
+
+Most resources follow the same shape:
+
+```
+GET    /<resource>            list (some use /all)
+GET    /<resource>/:id        get one
+POST   /<resource>/create     create
+PATCH  /<resource>/update/:id update
+DELETE /<resource>/delete/:id delete
+```
+
+Exceptions: `/materials` uses `GET /materials/all`, `PATCH /materials/:id` and `DELETE /materials/:id`. `/vendors`, `/catalogues` and `/catalogue-materials` use `/all` for the list and `/vendor/:id`, `/catalogue/:id` and `/catalogue-material/:id` for get-one.
+
+## Authentication and data ownership
+
+- Every route requires a valid session cookie (`AuthGuard`), except the health route `GET /`.
+- Every record stores `created_by`, and queries are scoped to the logged-in user. One account never sees another account's data.
+- `created_by` is set from the session on the server. Do **not** send it in request bodies: the API rejects unknown fields.
+
+## Validation
+
+A global `ValidationPipe` runs with `whitelist`, `forbidNonWhitelisted` and `transform` enabled. Requests with unknown properties return `400`, and dates are accepted as `yyyy-MM-dd`.
+
+## Database and migrations
+
+Schema changes live in `prisma/schema.prisma`. To create a migration during development:
 
 ```bash
-# development
-$ pnpm run start
-
-# watch mode
-$ pnpm run start:dev
-
-# production mode
-$ pnpm run start:prod
+pnpm prisma migrate dev --name <describe_the_change>
 ```
 
-## Run tests
-
-```bash
-# unit tests
-$ pnpm run test
-
-# e2e tests
-$ pnpm run test:e2e
-
-# test coverage
-$ pnpm run test:cov
-```
+In production, **do not run migrations by hand**. The Docker image runs `prisma migrate deploy` on every start, so committing the migration folder and deploying is enough.
 
 ## Deployment
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
-
 ```bash
-$ pnpm install -g @nestjs/mau
-$ mau deploy
+docker build -t home-builder-api .
+docker run --env-file .env -p 8080:8080 home-builder-api
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
-
-## Resources
-
-Check out a few resources that may come in handy when working with NestJS:
-
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+The container applies pending migrations and then starts `node dist/main`. Set the environment variables listed above on your host (for example, Railway).
 
 ## License
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+Private project. All rights reserved.
