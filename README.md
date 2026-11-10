@@ -1,4 +1,4 @@
-# Home Builder Software
+# Andamio
 
 Backend API for managing home-building projects: properties, clients and sales, contracts and payments, labor, expenses, vendors, material purchases and reports. Built with NestJS, Prisma and PostgreSQL, with authentication handled by Better Auth.
 
